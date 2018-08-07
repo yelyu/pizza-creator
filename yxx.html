@@ -1,84 +1,122 @@
 <!DOCTYPE html>
 
 <html>
+    <head>
+        <title>Pizza Creater</title>
+    </head>
 
-<head>
-    <title>Pizza Creater</title>
-</head>
+    <body>
+        <h1>Pizza Creater</h1>
+        <section>
+            <h2>Enter your details</h2>
+            <form>
+                <div>
+                    <label for="Name">Name</label>
+                    <input id="Name">
+                </div>
+                <div>
+                    <label>Email</label>
+                    <input>
+                </div>
+                <div>
+                    <label>Conform Email</label>
+                    <input>
+                </div>
+                <div>
+                    <label>Address</label>
+                    <input>
+                </div>
+                <div>
+                    <label>Postcode</label>
+                    <input>
+                </div>
+                <div>
+                    <label>Contact Number</label>
+                    <input>
+                </div>
+            </form>
+        </section>
+        
+        <section>
+            <h2>Choose your toppings</h2>
+            <div>
+                <img src="./assets/toppings/onion.svg">
+                Onion
+            </div>
+            <div>
+                <img src="./assets/toppings/anchovy.svg">
+                Anchovies
+            </div>
+            <div>
+                <img src="./assets/toppings/bacon.svg">
+                Bacons
+            </div>
+            <div>
+                <img src="./assets/toppings/basil.svg">
+                Basils
+            </div>
+            <div>
+                <img src="./assets/toppings/chili.svg">
+                Chilies
+            </div>
+            <div>
+                <img src="./assets/toppings/mozzarella.svg">
+                Mozzarellas
+            </div>
+            <div>
+                <img src="./assets/toppings/mushroom.svg">
+                Mushrooms
+            </div>
+            <div>
+                <img src="./assets/toppings/olive.svg">
+                Olives
+            </div>
+            <div>
+                <img src="./assets/toppings/pepper.svg">
+                Peppers
+            </div>
+        </section>
 
-<body>
-    <h1>Pizza Creater</h1>
-    <section>
-        <h2>Enter your details</h2>
-        <form>
-            <div>
-                <label for="Name">Name</label>
-                <input id="Name">
-            </div>
-            <div>
-                <label>Email</label>
-                <input>
-            </div>
-            <div>
-                <label>Conform Email</label>
-                <input>
-            </div>
-            <div>
-                <label>Address</label>
-                <input>
-            </div>
-            <div>
-                <label>Postcode</label>
-                <input>
-            </div>
-            <div>
-                <label>Contact Number</label>
-                <input>
-            </div>
+        <section>
+            <h2>Summary</h2>
+
+            <ul class="items">
+                <li>
+                    <span class="item">Pizza</span>
+                    <span class="price">$9.99</span>
+                    <ul>
+                    <li>
+                        <span class="item">Onion</span>
+                        <span class="price">$0.99</span>
+                    </li>
+                    <li>
+                        <span class="item">Mushroom</span>
+                        <span class="price">$0.99</span>
+                    </li>
+                    <li>
+                        <span class="item">Bacon</span>
+                        <span class="price">$0.99</span>
+                    </li>
+                    <li>
+                        <span class="item">Anchovy</span>
+                        <span class="price">$0.99</span>
+                    </li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <hr>
+
+        <p>
+            Total:  $13.99
+        </p>
+
+        <form method="GET">
+            <input type="submit" value="Place order">
         </form>
-    </section>
 
-    <section>
-        <h2>Choose your toppings</h2>
-        <div>
-            <img src="onion.svg"> Onion
-        </div>
-        <div>
-            <img src="onion.svg"> Onion
-        </div>
-        <div>
-            <img src="onion.svg"> Onion
-        </div>
-        <div>
-            <img src="onion.svg"> Onion
-        </div>
-    </section>
-
-    <section>
-        <h2>Summary</h2>
-        <ul>
-            <li>Pizza $9.99</li>
-            <li>
-                <ul>
-                    <li>Onion $0.99</li>
-                    <li>Mushroom $0.99</li>
-                    <li>Bacon $0.99</li>
-                    <li>Anchovy $0.99</li>
-                </ul>
-            </li>
-        </ul>
-    </section>
-
-    <hr>
-
-    <p>
-        Total: $13.99
-    </p>
-
-    <form method="GET">
-        <input type="submit" value="Place order">
-    </form>
-
-</body>
-
+    </body>
 </html>
+
+

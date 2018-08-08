@@ -7,21 +7,22 @@
     <meta name="description" content="A simple pizza creator">
     <meta name="author" content="Yuchen Qiao">
     <title>Pizza Creator</title>
-    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="ex.css">
 </head>
 
 <body>
-    <h1>Pizza Creator</h1>
-    <section class="app">
-        <section class="sidebar">
+    <section class="pizza-creator-app">
+        <h1>Pizza Creator</h1>
+        <!-- this aside is sidebar -->
+        <aside class="pizza-viewer">
             <div class="pizza">
                 <div class="pizza-board">
-                    <img src="./assets/board.svg" alt="baord">
+                    <img src="./assets/board.svg" alt="Pizza board">
                 </div>
                 <div class="pizza-base">
-                    <img src="./assets/base.svg" alt="base">
+                    <img src="./assets/base.svg" alt="Pizza base">
                 </div>
-                <div class="toppings-shown">
+                <div class="pizza-toppings">
                     <img src="./assets/toppings/anchovies.svg" alt="Anchovies">
                     <img src="./assets/toppings/bacons.svg" alt="Bacons">
                     <img src="./assets/toppings/basils.svg" alt="Basils">
@@ -33,9 +34,12 @@
                     <img src="./assets/toppings/peppers.svg" alt="Peppers">
                 </div>
             </div>
-        </section>
-        <section>
+        </aside>
+        <!-- this is the main content -->
+        <main class="form">
+            <!-- the whole main part is a form part -->
             <form action="">
+                <!-- this seciton is for consumer detials -->
                 <section class="details">
                     <h2>Enter your details</h2>
                     <div class="details-container">
@@ -65,12 +69,61 @@
                         </div>
                     </div>
                 </section>
+                <!-- this section is for toppings -->
                 <section class="toppings">
                     <h2>Choose your toppings</h2>
                     <div class="toppings-container" id="toppingsChoiceForm">
-                        <!-- 这里不需要再写 HTML 了， 刚才的 JS 会生成 HTML -->
+                        <button class="topping" type="button" id="Anchovy">
+                            <img src="./assets/toppings/anchovy.svg" alt="Anchovy">
+                            <span>Anchovy</span>
+                        </button>
+                        <button class="topping" type="button" id="Bacon">
+                            <img src="./assets/toppings/bacon.svg" alt="Bacon">
+                            <span>Bacon</span>
+                        </button>
+                        <button class="topping" type="button" id="Basil">
+                            <img src="./assets/toppings/basil.svg" alt="Basil">
+                            <span>Basil</span>
+                        </button>
+                        <button class="topping" type="button" id="Chili">
+                            <img src="./assets/toppings/chili.svg" alt="Chili">
+                            <span>Chili</span>
+                        </button>
+                        <button class="topping" type="button" id="Mozzarella">
+                            <img src="./assets/toppings/mozzarella.svg" alt="Mozzarella">
+                            <span>Mozzarella</span>
+                        </button>
+                        <button class="topping" type="button" id="Mushroom">
+                            <img src="./assets/toppings/mushroom.svg" alt="Mushroom">
+                            <span>Mushroom</span>
+                        </button>
+                        <button class="topping" type="button" id="Olive">
+                            <img src="./assets/toppings/olive.svg" alt="Olive">
+                            <span>Olive</span>
+                        </button>
+                        <button class="topping" type="button" id="Onion">
+                            <img src="./assets/toppings/onion.svg" alt="Onion">
+                            <span>Onion</span>
+                        </button>
+                        <button class="topping" type="button" id="Pepper">
+                            <img src="./assets/toppings/pepper.svg" alt="Pepper">
+                            <span>Pepper</span>
+                        </button>
+                        <button class="topping" type="button" id="Pepperoni">
+                            <img src="./assets/toppings/pepperoni.svg" alt="Pepperoni">
+                            <span>Pepperoni</span>
+                        </button>
+                        <button class="topping" type="button" id="Peppers">
+                            <img src="./assets/toppings/peppers.svg" alt="Peppers">
+                            <span>Peppers</span>
+                        </button>
+                        <button class="topping" type="button" id="Sweetcorn">
+                            <img src="./assets/toppings/sweetcorn.svg" alt="Sweetcorn">
+                            <span>Sweetcorn</span>
+                        </button>
                     </div>
                 </section>
+                <!-- this seciton is for summary -->
                 <section class="summary">
                     <h2>Summary</h2>
                     <ul class="items">
@@ -108,9 +161,8 @@
                     </p>
                 </section>
             </form>
-        </section>
+        </main>
     </section>
-    <script src="" defer></script>
 </body>
 
 </html>

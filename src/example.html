@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,66 +11,82 @@
       margin: 0;
       font: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
     }
+
     h1 {
       display: none;
     }
+
     .pizza-creator-app {
       display: flex;
       margin-left: -2rem;
       min-height: 100vh;
     }
-    .pizza-creator-app > * {
+
+    .pizza-creator-app>* {
       padding-left: 2rem;
     }
+
     .pizza-viewer {
       background: #3A424F;
     }
+
     .pizza {
       width: 500px;
       height: 350px;
       position: relative;
     }
-    .pizza > * {
+
+    .pizza>* {
       position: absolute;
     }
-    .pizza > .pizza-base {
+
+    .pizza>.pizza-base {
       width: 75%;
       left: 90px;
     }
-    .pizza > .pizza-toppings {
+
+    .pizza>.pizza-toppings {
       width: 70%;
       left: 100px;
     }
-    .pizza > .pizza-board {
+
+    .pizza>.pizza-board {
       width: 100%;
     }
+
     .pizza img {
       margin: 100px 20px 0;
     }
+
     .pizza-toppings img {
       margin-top: 120px;
       position: absolute;
     }
+
     .form {
       width: 100%;
       padding-right: 2rem;
       height: 100vh;
       overflow: auto;
     }
+
     h2 {
       color: #6E7790;
       font-size: 22px;
       font-weight: 300;
       margin: 2rem 0;
     }
+
     .place-order {
       margin-top: 2rem;
     }
+
     .details-container {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-gap: 2rem;
     }
+
     .detail label {
       display: block;
       margin-bottom: 0.5rem;
@@ -78,21 +95,24 @@
       font-weight: bold;
       color: #6E7790;
     }
+
     .detail input {
       border-radius: 2px;
       border: 1px solid #d7d7e7;
       font-size: 1.2rem;
-      color: rgba(0,0,0,0.8);
+      color: rgba(0, 0, 0, 0.8);
       padding: 0.5rem 1rem;
       outline: none;
       width: 100%;
       box-sizing: border-box;
     }
+
     .toppings-container {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       grid-gap: 2rem;
     }
+
     .topping {
       display: flex;
       align-items: center;
@@ -103,6 +123,7 @@
       border: 0;
       outline: 0;
     }
+
     .topping img {
       width: 40px;
       height: 40px;
@@ -111,16 +132,20 @@
       background: #e6e6e6;
       margin-right: 1rem;
     }
+
     .summary li {
       margin: 1rem 0;
     }
+
     .summary .price {
       float: right;
     }
+
     .summary .total-price {
       font-size: 1.5rem;
       text-align: right;
     }
+
     button[type="submit"] {
       width: 100%;
       background: #98C550;
@@ -132,6 +157,7 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
     button[type="submit"]:hover {
       background: #90ce2e;
     }
@@ -141,7 +167,7 @@
       // name: 'Anchovy', // 如果我想改一下咸鱼的名字 我只需要改这里就可以了
       name: '咸鱼', // 我们再回到 slack 去
       labelImage: './assets/toppings/anchovy.svg',
-      contentImage: './assets/toppings/anchovies.svg'      
+      contentImage: './assets/toppings/anchovies.svg'
     }, {
       name: 'Bacon',
       labelImage: './assets/toppings/bacon.svg',
@@ -190,7 +216,7 @@
 
     const selectedToppings = [];
 
-    function initializeToppingsChoiceForm () {
+    function initializeToppingsChoiceForm() {
       // 我们把这些东西抽象出去，这样更易于维护
       const toppingsChoiceForm = document.getElementById('toppingsChoiceForm');
       // 用 JS 去生成 topping choice form，让 JS 去写 HTML
@@ -199,7 +225,7 @@
       // https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement#Web_component_example
       // 这里我将会用 ES6 解构 https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
       // toppings.forEach(topping => {
-      toppings.forEach(({ labelImage, name}) => {
+      toppings.forEach(({ labelImage, name }) => {
         // 去 slack 上打个 1
         const img = document.createElement('img');
         img.src = labelImage;
@@ -226,7 +252,7 @@
       });
     }
 
-    function enhancedOnToppingClicked (toppingId) {
+    function enhancedOnToppingClicked(toppingId) {
       return function () {
         const isSelected = selectedToppings.includes(toppingId);
         if (isSelected) {
@@ -234,13 +260,13 @@
           selectedToppings.splice(index, 1);
           return; // 注意这里，如果isSelectd了，操作完成后就直接返回了，告诉代码不要继续往下跑了，节省内存
         }
-        
+
         // 只有在没有 return 的时候才会跑到这里，也就是没有 isSelected
         selectedToppings.push(toppingId);
       }
     }
 
-    function onToppingClicked () {
+    function onToppingClicked() {
       // 我们现在创建一个数组，用来保存已经选中的 toppings
       // 我们看一下浏览器给了我们什么东西让我们方便操作
       // this 是这个 button 元素，我们现在需要从 button 元素里面提取到他的名字（或者id），让我们能够将 topping 添加到我们的数组里面去
@@ -271,6 +297,7 @@
     });
   </script>
 </head>
+
 <body>
   <section class="pizza-creator-app">
     <h1>Pizza Creator</h1>
@@ -317,7 +344,7 @@
               <input type="text" id="address" name="address">
             </div>
             <div class="detail">
-              <label for=postcode"">Postcode</label>
+              <label for=postcode "">Postcode</label>
               <input type="text" id="postcode" name="postcode">
             </div>
             <div class="detail">
@@ -372,4 +399,5 @@
     </section>
   </section>
 </body>
+
 </html>

@@ -1,5 +1,5 @@
 body {
-  margin: 0;
+  margin: 0 auto;
   /* reference: https://github.com/necolas/normalize.css/issues/665 */
   font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;

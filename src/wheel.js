@@ -41,15 +41,15 @@ function addId(element, value) {
   }
 }
 // =============================================================================
-function styleElementNextSiblings(tag, theclass) {
+function styleElementNextSiblings(tag, className) {
   if (!document.getElementsByTagName) return false;
   var elems = document.getElementsByTagName(tag);
   for (var i = 0; i < elems.length; i++) {
     var elem = getNextElement(elems[i].nextSibling);
-    addClass(elem, theclass);
+    addClass(elem, className);
   }
   // var elem = document.getElementsByTagName(tag);
-  // addClass(getNextElement(elem), theclass);
+  // addClass(getNextElement(elem), className);
 }
 
 function getNextElement(node) {

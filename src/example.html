@@ -213,9 +213,7 @@
       labelImage: './assets/toppings/sweetcorn.svg',
       contentImage: './assets/toppings/sweetcorns.svg',
     }];
-
     const selectedToppings = [];
-
     function initializeToppingsChoiceForm() {
       // 我们把这些东西抽象出去，这样更易于维护
       const toppingsChoiceForm = document.getElementById('toppingsChoiceForm');
@@ -230,10 +228,8 @@
         const img = document.createElement('img');
         img.src = labelImage;
         img.alt = name;
-
         const span = document.createElement('span');
         span.innerText = name;
-
         const button = document.createElement('button');
         button.className = 'topping';
         button.type = 'button'; // 如果不给 button type 的话，浏览器可能会以为他是一个 submit button，从而触发 submit 操作，这是我们不希望的
@@ -241,17 +237,14 @@
         // 我们这里就需要把 id 设置上
         button.appendChild(img);
         button.appendChild(span);
-
         // 我们要给 button 添加功能了，button 被点击的时候做一些神奇的操作
         // ok 它不是, 它是一个赋值
         // button.onclick = onToppingClicked;
         // 我写个高阶函数，让大家看一下好的是什么样子的
         button.onclick = enhancedOnToppingClicked(name);
-
         toppingsChoiceForm.appendChild(button);
       });
     }
-
     function enhancedOnToppingClicked(toppingId) {
       return function () {
         const isSelected = selectedToppings.includes(toppingId);
@@ -260,12 +253,10 @@
           selectedToppings.splice(index, 1);
           return; // 注意这里，如果isSelectd了，操作完成后就直接返回了，告诉代码不要继续往下跑了，节省内存
         }
-
         // 只有在没有 return 的时候才会跑到这里，也就是没有 isSelected
         selectedToppings.push(toppingId);
       }
     }
-
     function onToppingClicked() {
       // 我们现在创建一个数组，用来保存已经选中的 toppings
       // 我们看一下浏览器给了我们什么东西让我们方便操作
@@ -287,10 +278,8 @@
         // this.classList.add('active');
         selectedToppings.push(toppingId); // 又写错，sorry
       }
-
       // 一切ok，我们去slack上
     }
-
     window.addEventListener('DOMContentLoaded', () => {
       // 这样别人看到这一段代码就知道我现在在干什么，如果另外一个人要维护的话，他就知道去哪里维护toppingsChoiceForm了
       initializeToppingsChoiceForm();

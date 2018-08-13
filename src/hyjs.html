@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="uft-8">
-    <meta name="viewport" content="width=deveice-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="hymain.css">
     <!-- <link type="text/javascript" src="hy.js"> -->
@@ -49,19 +49,26 @@
         },
         "Pepperoni": {
             labelImage: './assets/toppings/pepperoni.svg',
-            contentImage: './assets/toppings/pepperonis.svg'
+            contentImage: './assets/toppings/pepperoni.svg'
         },
         "Peppers": {
             labelImage: './assets/toppings/peppers.svg',
-            contentImage: './assets/toppings/pepperss.svg'
+            contentImage: './assets/toppings/peppers.svg'
         },
         "Sweetcorn": {
             labelImage: './assets/toppings/sweetcorn.svg',
-            contentImage: './assets/toppings/sweetcorns.svg'
+            contentImage: './assets/toppings/sweetcorn.svg'
+        },
+        "Tomato": {
+            labelImage: './assets/toppings/tomato.svg',
+            contentImage: './assets/toppings/tomato.svg'
         }
     }
 
-    function addToppings(name, labelImage, contentImage, toppings) {
+    var selectedToppings = [];
+    var summaryPrice = 9.99;
+
+    function addToppingsContent(name, labelImage, contentImage, toppings) {
         toppings[name] = {
             labelImage: labelImage,
             contentImage: contentImage
@@ -91,48 +98,98 @@
 
                 btn.onclick = toppingOnClick;
 
-                /* var btnDiv = document.createElement('div');
-                 btnDiv.className = "topping";
-                 btnDiv.id = n;
-
-                 btnDiv.appendChild(img);
-                 btnDiv.appendChild(span);
-
-                 btnDiv.onclick = toppingOnClick;*/
-
-
                 document.querySelector('#toppingsChoiceForm').appendChild(btn);
 
             }
         }
     }
 
-    var selectedToppings = [];
-
+    //click button event 
     function clickActive(node) {
         var name = node.id;
         if (selectedToppings.includes(name)) {
             selectedToppings.splice(selectedToppings.indexOf(name), 1);
             node.classList.remove("active");
+            // need to redirect to li node 
+            summaryListRemover(node);
+            reducePrice();
+            showPrice()
             return;
         }
 
         node.classList.add("active");
         selectedToppings.push(name);
+        summaryListGenerator(node);
+        // addToppings(node);
+        addPrice();
+        showPrice();
     }
 
-    function toppingOnClick(n) {
-        var tagName = n.target.tagName;
+    //check if current target is button
+    function toppingOnClick(event) {
+        var tagName = event.target.tagName;
 
         if (tagName === "BUTTON") {
-            clickActive(n.target);
+            clickActive(event.target);
         } else {
-            clickActive(n.target.parentNode);
+            clickActive(event.target.parentNode);
         }
     }
 
+    //summary list
+    function summaryListGenerator(element) {
+        // element : n.target
+        var li = document.createElement('li');
+        li.id = element.id + "li";
+
+        var name = document.createElement('span');
+        name.innerText = element.id;
+
+        var price = document.createElement('span');
+        price.innerText = "$0.99";
+
+        li.appendChild(price);
+        li.appendChild(name);
+
+        document.querySelector('#summaryForm').appendChild(li);
+    }
+
+    function summaryListRemover(element) {
+        var liId = element.id + "li";
+        //redirect to li node 
+        liNode = document.getElementById(liId);
+        liNode.parentNode.removeChild(liNode);
+    }
+
+    //functions on summary price
+    function addPrice() {
+        summaryPrice += 0.9;
+    }
+
+    function reducePrice() {
+        summaryPrice -= 0.9;
+    }
+
+    function showPrice() {
+        var price = document.getElementById('price');
+        price.innerHTML = "$" + summaryPrice.toFixed(2);
+    }
+
+    //functions on viewer
+    function addToppings(element) {
+
+        img = document.createElement('img');
+        img.src = toppings[element.id].contentImage;
+        img.className = "img";
+
+        document.getElementsByClassName("pizzaToppings")[0].appendChild(img);
+
+    }
+
+    function removeToppings(element) {}
+
+    //main
     window.addEventListener('DOMContentLoaded', () => {
-        // 这样别人看到这一段代码就知道我现在在干什么，如果另外一个人要维护的话，他就知道去哪里维护toppingsChoiceForm了
         initializeToppingsChoiceForm();
     });
 </script>
@@ -149,18 +206,10 @@
                 <div class="pizzaBase">
                     <img src="assets/base.svg" alt="none">
                 </div>
-                <div class="pizzaToppings">
-                    <img src="assets/toppings/anchovies.svg" alt="none">
-                </div>
-                <div class="pizzaToppingsLeft">
-                    <img src="assets/toppings/anchovies.svg" alt="none">
-                </div>
-                <div class="pizzaToppingsRight">
-                    <img src="assets/toppings/anchovies.svg" alt="none">
-                </div>
+                <div class="pizzaToppings"></div>
             </div>
         </section>
-        <!--form sction-->
+        <!--form section-->
         <section class="form">
             <form>
                 <!--enter details section-->
@@ -176,8 +225,8 @@
                             <input id="email" type="text" name="name">
                         </div>
                         <div class="detail">
-                            <label for="confirmemail">CONFIRM EMAIL</label>
-                            <input id="confirmemail" type="text" name="name">
+                            <label for="confirmEmail">CONFIRM EMAIL</label>
+                            <input id="confirmEmail" type="text" name="name">
                         </div>
                         <div class="detail">
                             <label for="address">ADDRESS</label>
@@ -196,56 +245,7 @@
                 <!--choose toppings section-->
                 <section>
                     <h2>Choosing your toppings</h2>
-                    <div class="toppingContainer" id="toppingsChoiceForm">
-                        <!-- <button class="topping" type="button" id="anchovy">
-                            <img src="./assets/toppings/anchovy.svg" alt="none">
-                            <span>anchovy</span>
-                        </button>
-                        <button class="topping" type="button" id="anchovy">
-                            <img src="./assets/toppings/anchovy.svg" alt="none">
-                            <span>anchovy</span>
-                        </button>
-                        <button class="topping" type="button" id="anchovy">
-                            <img src="./assets/toppings/anchovy.svg" alt="none">
-                            <span>anchovy</span>
-                        </button>
-                        <button class="topping" type="button" id="anchovy">
-                            <img src="./assets/toppings/anchovy.svg" alt="none">
-                            <span>anchovy</span>
-                        </button>
-                        <button class="topping" type="button" id="anchovy">
-                            <img src="./assets/toppings/anchovy.svg" alt="none">
-                            <span>anchovy</span>
-                        </button>
-                        <button class="topping" type="button" id="anchovy">
-                            <img src="./assets/toppings/anchovy.svg" alt="none">
-                            <span>anchovy</span>
-                        </button>
-                        <button class="topping" type="button" id="anchovy">
-                            <img src="./assets/toppings/anchovy.svg" alt="none">
-                            <span>anchovy</span>
-                        </button>
-                        <button class="topping" type="button" id="anchovy">
-                            <img src="./assets/toppings/anchovy.svg" alt="none">
-                            <span>anchovy</span>
-                        </button>
-                        <button class="topping" type="button" id="anchovy">
-                            <img src="./assets/toppings/anchovy.svg" alt="none">
-                            <span>anchovy</span>
-                        </button>
-                        <button class="topping" type="button" id="anchovy">
-                            <img src="./assets/toppings/anchovy.svg" alt="none">
-                            <span>anchovy</span>
-                        </button>
-                        <button class="topping" type="button" id="anchovy">
-                            <img src="./assets/toppings/anchovy.svg" alt="none">
-                            <span>anchovy</span>
-                        </button>
-                        <button class="topping" type="button" id="anchovy">
-                            <img src="./assets/toppings/anchovy.svg" alt="none">
-                            <span>anchovy</span>
-                        </button> -->
-                    </div>
+                    <div class="toppingContainer" id="toppingsChoiceForm"></div>
                 </section>
                 <!--summary section-->
                 <section>
@@ -254,29 +254,13 @@
                         <li>
                             <span>$9.99</span>
                             <span>Pizza</span>
-                            <ul>
-                                <li>
-                                    <span>$0.99</span>
-                                    <span>Onion</span>
-                                </li>
-                                <li>
-                                    <span>$0.99</span>
-                                    <span>Mushroom</span>
-                                </li>
-                                <li>
-                                    <span>$0.99</span>
-                                    <span>Bacon</span>
-                                </li>
-                                <li>
-                                    <span>$0.99</span>
-                                    <span>Anchovy</span>
-                                </li>
-                            </ul>
+                            <ul id="summaryForm"></ul>
                         </li>
                     </ul>
                     <hr>
                     <p class="totalPrice">
-                        Total Price: $13.86
+                        <span>Total Price:</span>
+                        <span id="price">$9.99</span>
                     </p>
                     <div>
                         <button type="submit">Place order</button>

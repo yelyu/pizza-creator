@@ -170,20 +170,30 @@
   <script>
     var selectedToppings = [];
 
-    function onToppingClick(ev) {
-      var name = ev.target.id;
+    // 高阶函数
+    function higherOrderFunction() {
+      return function () {};
+    }
 
-      if (selectedToppings.includes(name)) {
-        var index = selectedToppings.indexOf(name);
-        selectedToppings.splice(index, 1);
+    function onToppingClick(topping) {
+      return function() {
+        var name = topping.name;
+        
+        var selector = `button.topping#${name}`;
+        var toppingBtn = document.querySelector(selector);
+  
+        if (selectedToppings.includes(name)) {
+          var index = selectedToppings.indexOf(name);
+          selectedToppings.splice(index, 1);
+          
+          toppingBtn.classList.remove('active');
 
-        ev.target.classList.remove('active');
+          return;
+        }
 
-        return;
+        selectedToppings.push(name);
+        toppingBtn.classList.add('active');
       }
-
-      selectedToppings.push(name);
-      ev.target.classList.add('active');
     }
 
     function renderToppingsForm() {
@@ -232,7 +242,10 @@
         btn.type = 'button';
         btn.id = topping.name;
         btn.classList.add('topping');
-        btn.onclick = onToppingClick;
+
+        const func = onToppingClick(topping);
+        
+        btn.onclick = func;
 
         var img = document.createElement('img');
         img.src = topping.labelImage;

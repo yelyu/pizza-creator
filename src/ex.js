@@ -1,14 +1,7 @@
-var selectedToppings = [];
-function onToppingClick(ev) {
-  var name = ev.target.id;
-  if (selectedToppings.includes(name)) {
-    var index = selectedToppings.indexOf(name);
-    selectedToppings.splice(index, 1);
-    ev.target.classList.remove("active");
-    return;
-  }
-  selectedToppings.push(name);
-  ev.target.classList.add("active");
+window.addEventListener("DOMContentLoaded", main);
+
+function main() {
+  renderToppingsForm();
 }
 
 function renderToppingsForm() {
@@ -68,7 +61,10 @@ function renderToppingsForm() {
     btn.type = "button";
     btn.id = topping.name;
     btn.classList.add("topping");
-    btn.onclick = onToppingClick;
+
+    const func = onToppingClick(topping);
+    btn.onclick = func;
+
     var img = document.createElement("img");
     img.src = topping.labelImage;
     img.alt = topping.name;
@@ -79,7 +75,29 @@ function renderToppingsForm() {
     document.querySelector("#toppingsContainer").appendChild(btn);
   }
 }
-function main() {
-  renderToppingsForm();
+
+var selectedToppings = [];
+// 高阶函数
+// function higherOrderFunction() {
+//   return function() {};
+// }
+function onToppingClick(topping) {
+  return function() {
+    var name = topping.name;
+
+    var selector = `button.topping#${name}`;
+    var toppingBtn = document.querySelector(selector);
+
+    if (selectedToppings.includes(name)) {
+      var index = selectedToppings.indexOf(name);
+      selectedToppings.splice(index, 1);
+
+      toppingBtn.classList.remove("active");
+      return;
+    }
+    selectedToppings.push(name);
+    toppingBtn.classList.add("active");
+  };
 }
-window.addEventListener("DOMContentLoaded", main);
+
+

@@ -2,6 +2,7 @@ import * as wheel from "./wheel.js";
 // Superiority of the DocumentFragment:
 // 不属于当前文档，对它的任何改动，都不会引发网页的重新渲染，比直接修改当前文档的 DOM 有更好的性能表现
 const docFragBtn = document.createDocumentFragment();
+const docFragToppings = document.createDocumentFragment();
 const selectedTopping = [];
 const toppings = [
   {
@@ -52,17 +53,17 @@ const toppings = [
   {
     name: "Pepperoni",
     labelImage: "./assets/toppings/pepperoni.svg",
-    contentImage: "./assets/toppings/pepperonis.svg"
+    contentImage: "./assets/toppings/pepperoni.svg"
   },
   {
     name: "Peppers",
     labelImage: "./assets/toppings/peppers.svg",
-    contentImage: "./assets/toppings/pepperss.svg"
+    contentImage: "./assets/toppings/peppers.svg"
   },
   {
     name: "Sweetcorn",
     labelImage: "./assets/toppings/sweetcorn.svg",
-    contentImage: "./assets/toppings/sweetcorns.svg"
+    contentImage: "./assets/toppings/sweetcorn.svg"
   }
 ];
 
@@ -72,15 +73,16 @@ wheel.handleEvent("DOMContentLoaded", {
   withCallback: () => {
     toppings.forEach(renderSingleTopping);
     document.querySelector("#toppingsChoiceForm").appendChild(docFragBtn);
+    document.querySelector(".pizza-toppings").appendChild(docFragToppings);
   }
 });
 
 function renderSingleTopping({ name, labelImage, contentImage }) {
-  const img = document.createElement("img");
-  // img.setAttribute("src", labelImage);
-  // img.setAttribute("alt", name);
-  img.src = labelImage;
-  img.alt = name;
+  const labelImg = document.createElement("img");
+  // labelImg.setAttribute("src", labelImage);
+  // labelImg.setAttribute("alt", name);
+  labelImg.src = labelImage;
+  labelImg.alt = name;
 
   const span = document.createElement("span");
   // span.innerText = name;
@@ -93,30 +95,34 @@ function renderSingleTopping({ name, labelImage, contentImage }) {
   // btn.classList.toggle("topping", true);
   btn.type = "button";
   btn.id = name;
-  btn.appendChild(img);
-  // btn.appendChild(span);
-  wheel.insertAfter(span, img);
-
+  btn.appendChild(labelImg);
+  btn.appendChild(span);
   docFragBtn.appendChild(btn);
-  // document.getElementById("toppingsChoiceForm").appendChild(btn);
-  // document.querySelector("#toppingsChoiceForm").appendChild(btn);
+
+  const contentImg = document.createElement("img");
+  contentImg.setAttribute("src", contentImage);
+  contentImg.setAttribute("alt", name);
+  contentImg.setAttribute("class", "pizza-toppings-each-inactive");
+  docFragToppings.appendChild(contentImg);
 
   const handleBtnClick = wheel.handleEvent("click", {
     onElement: btn,
-    withCallback: onToppingClick(name, btn)
+    withCallback: onToppingClick(name, btn, contentImg)
   });
 }
 
-function onToppingClick(toppingName, toppingBtn) {
+function onToppingClick(toppingName, toppingBtn, contentImage) {
   return () => {
     // var toppingBtn = document.querySelector(`button.topping#${name}`);
     if (selectedTopping.includes(toppingName)) {
       const index = selectedTopping.indexOf(toppingName);
       selectedTopping.splice(index, 1);
       toppingBtn.classList.remove("active");
+      contentImage.classList.add("pizza-toppings-each-inactive");
       return;
     }
     selectedTopping.push(toppingName);
     toppingBtn.classList.add("active");
+    contentImage.classList.remove("pizza-toppings-each-inactive");
   };
 }

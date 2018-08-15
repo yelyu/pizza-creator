@@ -47,11 +47,6 @@ h1 {
   position: absolute;
   width: 70%;
   left: 100px;
-  top: 15px;
-}
-
-.pizza-each-topping-inactive {
-  display: none;
 }
 
 .pizza img {
@@ -60,6 +55,10 @@ h1 {
 
 .pizza-toppings img {
   position: absolute;
+}
+
+.pizza-toppings-each-inactive {
+  display: none;
 }
 
 /* this is the main content */

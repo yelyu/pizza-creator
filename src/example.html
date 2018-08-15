@@ -228,8 +228,10 @@
         const img = document.createElement('img');
         img.src = labelImage;
         img.alt = name;
+
         const span = document.createElement('span');
         span.innerText = name;
+
         const button = document.createElement('button');
         button.className = 'topping';
         button.type = 'button'; // 如果不给 button type 的话，浏览器可能会以为他是一个 submit button，从而触发 submit 操作，这是我们不希望的
@@ -245,6 +247,7 @@
         toppingsChoiceForm.appendChild(button);
       });
     }
+
     function enhancedOnToppingClicked(toppingId) {
       return function () {
         const isSelected = selectedToppings.includes(toppingId);
@@ -257,6 +260,7 @@
         selectedToppings.push(toppingId);
       }
     }
+    
     function onToppingClicked() {
       // 我们现在创建一个数组，用来保存已经选中的 toppings
       // 我们看一下浏览器给了我们什么东西让我们方便操作

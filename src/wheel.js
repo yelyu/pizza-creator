@@ -1,3 +1,45 @@
+export {
+  handleEvent,
+  addLoadEvent,
+  insertAfter,
+  addClass,
+  addId,
+  styleElementNextSiblings,
+  getHttpObject
+};
+// =============================================================================
+function handleEvent(
+  eventName,
+  { onElement, withCallback, useCapture = false } = {},
+  thisArg
+) {
+  const element = onElement || document.documentElement;
+
+  function handler(event) {
+    if (typeof withCallback === "function") {
+      withCallback.call(thisArg, event);
+    }
+  }
+
+  handler.destroy = function() {
+    return element.removeEventListener(eventName, handler, useCapture);
+  };
+
+  element.addEventListener(eventName, handler, useCapture);
+  return handler;
+}
+
+// 你需要的时候
+// const handleClick = handleEvent("click", {
+//   onElement: element,
+//   withCallback: event => {
+//     console.log("Tada!");
+//   }
+// });
+
+// 你想删除它的时候
+// handleClick.destroy();
+// =============================================================================
 function addLoadEvent(func) {
   var old_onload = window.onload;
   if (typeof window.onload != "function") {
@@ -60,56 +102,6 @@ function getNextElement(node) {
     return getNextElement(node.nextSibling);
   }
   return null;
-}
-// =============================================================================
-function moveElement(elementID, final_x, final_y, interval) {
-  if (!document.getElementById) return false;
-  if (!document.getElementById(elementID)) return false;
-  var elem = document.getElementById(elementID);
-  if (elem.movement) {
-    clearTimeout(elem.movement);
-  }
-  if (!elem.style.left) {
-    elem.style.left = "0px";
-  }
-  if (!elem.style.top) {
-    elem.style.top = "0px";
-  }
-  var xpos = parseInt(elem.style.left);
-  var ypos = parseInt(elem.style.top);
-  if (xpos == final_x && ypos == final_y) {
-    return true;
-  }
-  if (xpos < final_x) {
-    var dist = Math.ceil((final_x - xpos) / 5);
-    xpos += dist;
-  }
-  if (xpos > final_x) {
-    var dist = Math.ceil((xpos - final_x) / 5);
-    xpos -= dist;
-  }
-  if (ypos < final_y) {
-    var dist = Math.ceil((final_y - ypos) / 5);
-    ypos += dist;
-  }
-  if (ypos > final_y) {
-    var dist = Math.ceil((ypos - final_y) / 5);
-    ypos -= dist;
-  }
-  elem.style.left = xpos + "px";
-  elem.style.top = ypos + "px";
-  // var repeat = "moveElement(${elementID}, ${final_x}, ${final_y}, ${interval})";
-  var repeat =
-    "moveElement('" +
-    elementID +
-    "'," +
-    final_x +
-    "," +
-    final_y +
-    "," +
-    interval +
-    ")";
-  elem.movement = setTimeout(repeat, interval);
 }
 // =============================================================================
 function getHttpObject() {

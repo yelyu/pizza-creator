@@ -13,6 +13,8 @@ h1 {
 }
 
 .pizza-creator-app {
+  width: fit-content;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 3.5fr;
 }
@@ -68,6 +70,7 @@ form {
   font-size: 25px;
   font-weight: 300;
   color: black;
+  margin: 2rem 0;
 }
 
 .details .details-container {
@@ -105,6 +108,7 @@ form {
   font-size: 25px;
   font-weight: 300;
   color: black;
+  margin: 2rem 0;
 }
 
 .toppings-container {
@@ -121,6 +125,11 @@ form {
   cursor: pointer;
   padding: 0;
   border: hidden;
+}
+
+.topping.active {
+  background: #1a98e1;
+  color: white;
 }
 
 .topping img {
@@ -143,7 +152,7 @@ form {
   font-size: 25px;
   font-weight: 300;
   color: black;
-  /* margin: 2rem 0; */
+  margin: 2rem 0;
 }
 
 .summary li {

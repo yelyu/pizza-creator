@@ -1,4 +1,6 @@
 import * as wheel from "./wheel.js";
+
+const docFrag = document.createDocumentFragment();
 const selectedTopping = [];
 const toppings = [
   {
@@ -68,6 +70,7 @@ wheel.handleEvent("DOMContentLoaded", {
   onElement: window,
   withCallback: () => {
     toppings.forEach(renderSingleTopping);
+    document.querySelector("#toppingsChoiceForm").appendChild(docFrag);
   }
 });
 
@@ -90,10 +93,11 @@ function renderSingleTopping({ name, labelImage, contentImage }) {
   btn.type = "button";
   btn.id = name;
   btn.appendChild(img);
-  btn.appendChild(span);
-  // wheel.insertAfter(span, img);
-
-  document.getElementById("toppingsChoiceForm").appendChild(btn);
+  // btn.appendChild(span);
+  wheel.insertAfter(span, img);
+  
+  docFrag.appendChild(btn);
+  // document.getElementById("toppingsChoiceForm").appendChild(btn);
   // document.querySelector("#toppingsChoiceForm").appendChild(btn);
 
   const handleBtnClick = wheel.handleEvent("click", {

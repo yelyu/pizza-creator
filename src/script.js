@@ -153,7 +153,7 @@ function onToppingClick(toppingName, toppingBtn, contentImage, list, total) {
       toppingBtn.classList.remove("active");
       contentImage.classList.add("pizza-toppings-each-inactive");
       list.classList.add("li-inactive");
-      total.innerText = "Total: " + (9.99 + 0.99 * selectedTopping.length);
+      total.innerText = "Total: " + (9.99 + 0.99 * selectedTopping.length).toFixed(2);
       return;
     }
     // 第一次点：
@@ -161,6 +161,6 @@ function onToppingClick(toppingName, toppingBtn, contentImage, list, total) {
     toppingBtn.classList.add("active");
     contentImage.classList.remove("pizza-toppings-each-inactive");
     list.classList.remove("li-inactive");
-    total.innerText = "Total: " + (9.99 + 0.99 * selectedTopping.length);
+    total.innerText = "Total: " + (9.99 + 0.99 * selectedTopping.length).toFixed(2);
   };
 }

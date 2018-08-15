@@ -3,6 +3,8 @@ import * as wheel from "./wheel.js";
 // 不属于当前文档，对它的任何改动，都不会引发网页的重新渲染，比直接修改当前文档的 DOM 有更好的性能表现
 const docFragBtn = document.createDocumentFragment();
 const docFragToppings = document.createDocumentFragment();
+const docFragItems = document.createDocumentFragment();
+
 const selectedTopping = [];
 const toppings = [
   {
@@ -74,6 +76,7 @@ wheel.handleEvent("DOMContentLoaded", {
     toppings.forEach(renderSingleTopping);
     document.querySelector("#toppingsChoiceForm").appendChild(docFragBtn);
     document.querySelector(".pizza-toppings").appendChild(docFragToppings);
+    document.querySelector(".toppings-item-price").appendChild(docFragItems);
   }
 });
 
@@ -104,13 +107,33 @@ function renderSingleTopping({ name, labelImage, contentImage }) {
   });
   docFragToppings.appendChild(contentImg);
 
+  const li = initElement({
+    tagName: "li",
+    className: "li-inactive"
+  });
+  const spanItem = initElement({
+    tagName: "span",
+    className: "item"
+  });
+  spanItem.innerText = name;
+  const spanPrice = initElement({
+    tagName: "span",
+    className: "price"
+  });
+  spanPrice.innerText = "$0.99";
+  li.appendChild(spanItem);
+  li.appendChild(spanPrice);
+  docFragItems.appendChild(li);
+
+  const total = document.querySelector(".total-price");
+
   const handleBtnClick = wheel.handleEvent("click", {
     onElement: btn,
-    withCallback: onToppingClick(name, btn, contentImg)
+    withCallback: onToppingClick(name, btn, contentImg, li, total)
   });
 }
 
-function initElement({ tagName, src, alt, className, type, id }) {
+function initElement({ tagName, src, alt, className, type, id}) {
   const newElement = document.createElement(tagName);
   newElement.src = src || "";
   newElement.alt = alt || "";
@@ -120,18 +143,24 @@ function initElement({ tagName, src, alt, className, type, id }) {
   return newElement;
 }
 
-function onToppingClick(toppingName, toppingBtn, contentImage) {
+function onToppingClick(toppingName, toppingBtn, contentImage, list, total) {
   return () => {
     // var toppingBtn = document.querySelector(`button.topping#${name}`);
+    // 某个topping已经被点过了：
     if (selectedTopping.includes(toppingName)) {
       const index = selectedTopping.indexOf(toppingName);
       selectedTopping.splice(index, 1);
       toppingBtn.classList.remove("active");
       contentImage.classList.add("pizza-toppings-each-inactive");
+      list.classList.add("li-inactive");
+      total.innerText = "Total: " + (9.99 + 0.99 * selectedTopping.length);
       return;
     }
+    // 第一次点：
     selectedTopping.push(toppingName);
     toppingBtn.classList.add("active");
     contentImage.classList.remove("pizza-toppings-each-inactive");
+    list.classList.remove("li-inactive");
+    total.innerText = "Total: " + (9.99 + 0.99 * selectedTopping.length);
   };
 }

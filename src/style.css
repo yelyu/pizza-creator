@@ -162,6 +162,10 @@ form {
   margin: 1rem 0;
 }
 
+.li-inactive {
+  display: none;
+}
+
 .price {
   float: right;
 }

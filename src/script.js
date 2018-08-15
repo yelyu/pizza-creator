@@ -1,6 +1,7 @@
 import * as wheel from "./wheel.js";
-
-const docFrag = document.createDocumentFragment();
+// Superiority of the DocumentFragment:
+// 不属于当前文档，对它的任何改动，都不会引发网页的重新渲染，比直接修改当前文档的 DOM 有更好的性能表现
+const docFragBtn = document.createDocumentFragment();
 const selectedTopping = [];
 const toppings = [
   {
@@ -70,7 +71,7 @@ wheel.handleEvent("DOMContentLoaded", {
   onElement: window,
   withCallback: () => {
     toppings.forEach(renderSingleTopping);
-    document.querySelector("#toppingsChoiceForm").appendChild(docFrag);
+    document.querySelector("#toppingsChoiceForm").appendChild(docFragBtn);
   }
 });
 
@@ -95,8 +96,8 @@ function renderSingleTopping({ name, labelImage, contentImage }) {
   btn.appendChild(img);
   // btn.appendChild(span);
   wheel.insertAfter(span, img);
-  
-  docFrag.appendChild(btn);
+
+  docFragBtn.appendChild(btn);
   // document.getElementById("toppingsChoiceForm").appendChild(btn);
   // document.querySelector("#toppingsChoiceForm").appendChild(btn);
 
@@ -117,6 +118,5 @@ function onToppingClick(toppingName, toppingBtn) {
     }
     selectedTopping.push(toppingName);
     toppingBtn.classList.add("active");
-    // toppingBtn.className += "active";
   };
 }

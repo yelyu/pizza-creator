@@ -50,6 +50,10 @@ h1 {
   top: 15px;
 }
 
+.pizza-each-topping-inactive {
+  display: none;
+}
+
 .pizza img {
   margin: 100px 20px 0;
 }

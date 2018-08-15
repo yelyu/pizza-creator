@@ -8,6 +8,15 @@ export {
   getHttpObject
 };
 // =============================================================================
+// 一个封装了addEventListener 和 removeEventListener 的函数：
+// （script.js 只用了这个函数）
+/**
+ *
+ * @param {*} eventName
+ * @param {*} [{ onElement, withCallback, useCapture = false }={}]
+ * @param {*} thisArg
+ * @returns
+ */
 function handleEvent(
   eventName,
   { onElement, withCallback, useCapture = false } = {},

@@ -73,14 +73,20 @@ const toppings = [
 wheel.handleEvent("DOMContentLoaded", {
   onElement: window,
   withCallback: () => {
+    // 遍历toppings数组：
     toppings.forEach(renderSingleTopping);
+    // 遍历完了之后，把 DocumentFragment对象 加入到相应位置：
     document.querySelector("#toppingsChoiceForm").appendChild(docFragBtn);
     document.querySelector(".pizza-toppings").appendChild(docFragToppings);
     document.querySelector(".toppings-item-price").appendChild(docFragItems);
   }
 });
 
+/**
+ * @param {*} { name, labelImage, contentImage }
+ */
 function renderSingleTopping({ name, labelImage, contentImage }) {
+  // 这部分是button 内容：
   const labelImg = initElement({
     tagName: "img",
     src: labelImage,
@@ -98,7 +104,7 @@ function renderSingleTopping({ name, labelImage, contentImage }) {
   btn.appendChild(labelImg);
   btn.appendChild(span);
   docFragBtn.appendChild(btn);
-
+  // 这部分是披萨盘子上的toppings：
   const contentImg = initElement({
     tagName: "img",
     src: contentImage,
@@ -106,7 +112,7 @@ function renderSingleTopping({ name, labelImage, contentImage }) {
     className: "pizza-toppings-each-inactive"
   });
   docFragToppings.appendChild(contentImg);
-
+  // 这部分是结账内容：
   const li = initElement({
     tagName: "li",
     className: "li-inactive"
@@ -124,7 +130,7 @@ function renderSingleTopping({ name, labelImage, contentImage }) {
   li.appendChild(spanItem);
   li.appendChild(spanPrice);
   docFragItems.appendChild(li);
-
+  // 这部分是 total price 的内容：
   const total = document.querySelector(".total-price");
 
   const handleBtnClick = wheel.handleEvent("click", {
@@ -133,7 +139,12 @@ function renderSingleTopping({ name, labelImage, contentImage }) {
   });
 }
 
-function initElement({ tagName, src, alt, className, type, id}) {
+/**
+ * 把createElement封装了一个函数，减少renderSingleTopping代码冗余
+ * @param {*} { tagName, src, alt, className, type, id}
+ * @returns
+ */
+function initElement({ tagName, src, alt, className, type, id }) {
   const newElement = document.createElement(tagName);
   newElement.src = src || "";
   newElement.alt = alt || "";
@@ -143,6 +154,15 @@ function initElement({ tagName, src, alt, className, type, id}) {
   return newElement;
 }
 
+/**
+ * click 事件发生后的操作函数：
+ * @param {*} toppingName
+ * @param {*} toppingBtn
+ * @param {*} contentImage
+ * @param {*} list
+ * @param {*} total
+ * @returns
+ */
 function onToppingClick(toppingName, toppingBtn, contentImage, list, total) {
   return () => {
     // var toppingBtn = document.querySelector(`button.topping#${name}`);
@@ -153,7 +173,8 @@ function onToppingClick(toppingName, toppingBtn, contentImage, list, total) {
       toppingBtn.classList.remove("active");
       contentImage.classList.add("pizza-toppings-each-inactive");
       list.classList.add("li-inactive");
-      total.innerText = "Total: " + (9.99 + 0.99 * selectedTopping.length).toFixed(2);
+      total.innerText =
+        "Total: " + (9.99 + 0.99 * selectedTopping.length).toFixed(2);
       return;
     }
     // 第一次点：
@@ -161,6 +182,7 @@ function onToppingClick(toppingName, toppingBtn, contentImage, list, total) {
     toppingBtn.classList.add("active");
     contentImage.classList.remove("pizza-toppings-each-inactive");
     list.classList.remove("li-inactive");
-    total.innerText = "Total: " + (9.99 + 0.99 * selectedTopping.length).toFixed(2);
+    total.innerText =
+      "Total: " + (9.99 + 0.99 * selectedTopping.length).toFixed(2);
   };
 }

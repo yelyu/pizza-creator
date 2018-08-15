@@ -78,37 +78,46 @@ wheel.handleEvent("DOMContentLoaded", {
 });
 
 function renderSingleTopping({ name, labelImage, contentImage }) {
-  const labelImg = document.createElement("img");
-  // labelImg.setAttribute("src", labelImage);
-  // labelImg.setAttribute("alt", name);
-  labelImg.src = labelImage;
-  labelImg.alt = name;
-
-  const span = document.createElement("span");
-  // span.innerText = name;
+  const labelImg = initElement({
+    tagName: "img",
+    src: labelImage,
+    alt: name
+  });
+  const span = initElement({ tagName: "span" });
   span.appendChild(document.createTextNode(name));
-
-  const btn = document.createElement("button");
-  btn.className = "topping";
-  // btn.className += "topping";
-  // btn.classList.add("topping");
-  // btn.classList.toggle("topping", true);
-  btn.type = "button";
-  btn.id = name;
+  // span.innerText = name;
+  const btn = initElement({
+    tagName: "button",
+    className: "topping",
+    type: "button",
+    id: name
+  });
   btn.appendChild(labelImg);
   btn.appendChild(span);
   docFragBtn.appendChild(btn);
 
-  const contentImg = document.createElement("img");
-  contentImg.setAttribute("src", contentImage);
-  contentImg.setAttribute("alt", name);
-  contentImg.setAttribute("class", "pizza-toppings-each-inactive");
+  const contentImg = initElement({
+    tagName: "img",
+    src: contentImage,
+    alt: name,
+    className: "pizza-toppings-each-inactive"
+  });
   docFragToppings.appendChild(contentImg);
 
   const handleBtnClick = wheel.handleEvent("click", {
     onElement: btn,
     withCallback: onToppingClick(name, btn, contentImg)
   });
+}
+
+function initElement({ tagName, src, alt, className, type, id }) {
+  const newElement = document.createElement(tagName);
+  newElement.src = src || "";
+  newElement.alt = alt || "";
+  newElement.className = className || "";
+  newElement.type = type || "";
+  newElement.id = id || "";
+  return newElement;
 }
 
 function onToppingClick(toppingName, toppingBtn, contentImage) {

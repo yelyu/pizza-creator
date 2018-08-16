@@ -1,192 +1,192 @@
 body {
-  margin: 0 auto;
-  overflow: auto;
-  width: 100vw;
-  height: 100vh;
-  /* reference: https://github.com/necolas/normalize.css/issues/665 */
-  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+    margin: 0 auto;
+    overflow: auto;
+    width: 100vw;
+    height: 100vh;
+    /* reference: https://github.com/necolas/normalize.css/issues/665 */
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI',
+        Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 h1 {
-  display: none;
+    display: none;
 }
 
 .pizza-creator-app {
-  width: fit-content;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 3.5fr;
+    width: fit-content;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 3.5fr;
 }
 
 /* this is the sidebar: */
 .pizza-viewer {
-  background: #3a424f;
+    background: #3a424f;
 }
 
 .pizza {
-  width: 500px;
-  height: 350px;
-  position: relative;
-  left: 0px;
-  top: 100px;
+    width: 500px;
+    height: 350px;
+    position: relative;
+    left: 0px;
+    top: 100px;
 }
 
 .pizza-board {
-  position: absolute;
-  width: 100%;
+    position: absolute;
+    width: 100%;
 }
 
 .pizza-base {
-  position: absolute;
-  width: 75%;
-  left: 90px;
+    position: absolute;
+    width: 75%;
+    left: 90px;
 }
 
 .pizza-toppings {
-  position: absolute;
-  width: 70%;
-  left: 100px;
+    position: absolute;
+    width: 70%;
+    left: 100px;
 }
 
 .pizza img {
-  margin: 100px 20px 0;
+    margin: 100px 20px 0;
 }
 
 .pizza-toppings img {
-  position: absolute;
+    position: absolute;
 }
 
 .pizza-toppings-each-inactive {
-  display: none;
+    display: none;
 }
 
 /* this is the main content */
 form {
-  overflow: auto;
-  width: 100%;
-  padding: 0 2rem 0 2rem;
+    overflow: auto;
+    width: 100%;
+    padding: 0 2rem 0 2rem;
 }
 
 /* this is details: */
 .details h2 {
-  font-size: 25px;
-  font-weight: 300;
-  color: black;
-  margin: 2rem 0;
+    font-size: 25px;
+    font-weight: 300;
+    color: black;
+    margin: 2rem 0;
 }
 
 .details .details-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 2em;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 2em;
 }
 
 .detail {
-  display: inline-flex;
-  flex-direction: column;
-  grid-gap: 1em;
+    display: inline-flex;
+    flex-direction: column;
+    grid-gap: 1em;
 }
 
 .detail label {
-  margin-bottom: 0.5rem;
-  text-transform: uppercase;
-  font-size: 0.8rem;
-  font-weight: bold;
-  color: #6e7790;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #6e7790;
 }
 
 .detail input {
-  border-radius: 2px;
-  border: 1px solid #d7d7e7;
-  font-size: 1.2rem;
-  color: rgba(0, 0, 0, 0.8);
-  padding: 0.5rem 1rem;
-  width: 100%;
-  box-sizing: border-box;
+    border-radius: 2px;
+    border: 1px solid #d7d7e7;
+    font-size: 1.2rem;
+    color: rgba(0, 0, 0, 0.8);
+    padding: 0.5rem 1rem;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* this is toppings: */
 .toppings h2 {
-  font-size: 25px;
-  font-weight: 300;
-  color: black;
-  margin: 2rem 0;
+    font-size: 25px;
+    font-weight: 300;
+    color: black;
+    margin: 2rem 0;
 }
 
 .toppings-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 2rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 2rem;
 }
 
 .topping {
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  background: #f2f2f2;
-  cursor: pointer;
-  padding: 0;
-  border: hidden;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    background: #f2f2f2;
+    cursor: pointer;
+    padding: 0;
+    border: hidden;
 }
 
 .topping.active {
-  background: #1a98e1;
-  color: white;
+    background: #1a98e1;
+    color: white;
 }
 
 .topping img {
-  width: 40px;
-  height: 40px;
-  padding: 5px;
-  box-sizing: border-box;
-  background: #e6e6e6;
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+    box-sizing: border-box;
+    background: #e6e6e6;
 }
 
 .topping span {
-  text-transform: capitalize;
-  font-size: 1rem;
-  padding-left: 2em;
-  text-align: center;
+    text-transform: capitalize;
+    font-size: 1rem;
+    padding-left: 2em;
+    text-align: center;
 }
 
 /* this is summary: */
 .summary h2 {
-  font-size: 25px;
-  font-weight: 300;
-  color: black;
-  margin: 2rem 0;
+    font-size: 25px;
+    font-weight: 300;
+    color: black;
+    margin: 2rem 0;
 }
 
 .summary li {
-  margin: 1rem 0;
+    margin: 1rem 0;
 }
 
 .li-inactive {
-  display: none;
+    display: none;
 }
 
 .price {
-  float: right;
+    float: right;
 }
 
 .total-price {
-  font-size: 2rem;
-  text-align: right;
+    font-size: 2rem;
+    text-align: right;
 }
 
-button[type="submit"] {
-  width: 100%;
-  background: #98c550;
-  border: none;
-  padding: 10px 15px;
-  text-align: center;
-  font-size: 1.2rem;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
+button[type='submit'] {
+    width: 100%;
+    background: #98c550;
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    font-size: 1.2rem;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-button[type="submit"]:hover {
-  background: #90ce2e;
+button[type='submit']:hover {
+    background: #90ce2e;
 }

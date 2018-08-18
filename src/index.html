@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>New Pizza Creator</title>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
   <style>
     body {
       margin: 0;
@@ -167,7 +170,7 @@
       background: #90ce2e;
     }
   </style>
-  <script>
+  <script type="text/babel" data-presets="react">
     var toppings = [{
         name: 'Anchovy',
         labelImage: './assets/toppings/anchovy.svg',
@@ -221,189 +224,171 @@
     var selectedToppings = [];
 
     function onToppingClick(topping) {
-      return function() {
-        if (selectedToppings.includes(topping)) {
-          var index = selectedToppings.indexOf(topping);
-          selectedToppings.splice(index, 1);
-        } else {
-          selectedToppings.push(topping);
-        }
-
-        render();
+      if (selectedToppings.includes(topping)) {
+        var index = selectedToppings.indexOf(topping);
+        selectedToppings.splice(index, 1);
+      } else {
+        selectedToppings.push(topping);
       }
+
+      render();
     }
 
     function renderToppingsForm(selectedToppings, onBtnClick) {
-      var toppingsContainer = document.querySelector('#toppingsContainer');
-      toppingsContainer.innerHTML = '';
-
-      for (var i = 0; i < toppings.length; i++) {
-        var topping = toppings[i];
-        var btn = document.createElement('button');
-        btn.type = 'button';
-        btn.id = topping.name;
-        btn.classList.add('topping');
-        
-        const func = onBtnClick(topping);
-        btn.onclick = func;
-
-        if (selectedToppings.includes(topping)) {
-          btn.classList.add('active');
-        }
-
-        var img = document.createElement('img');
-        img.src = topping.labelImage;
-        img.alt = topping.name;
-
-        var span = document.createElement('span');
-        span.innerText = topping.name;
-
-        btn.appendChild(img);
-        btn.appendChild(span);
-
-        toppingsContainer.appendChild(btn);
-      }
+      return (
+        <div className="toppings-container">
+          {
+            toppings.map(topping => (
+              <button 
+                key={topping.name} 
+                type="button" 
+                className={`topping ${selectedToppings.includes(topping) && 'active'}`} 
+                onClick={() => onBtnClick(topping)}
+              >
+                <img src={topping.labelImage} alt={topping.name} />
+                <span>{topping.name}</span>
+              </button>
+            ))
+          }
+        </div>
+      );
     }
 
     function renderSummaryList(selectedToppings) {
-      var summaryList = document.querySelector(`ul#summaryList`);
-      summaryList.innerHTML = '';
-
-      selectedToppings.forEach(topping => {
-        var price = topping.price;
-        var name = topping.name;
-
-        var listItem = document.createElement('li');
-        listItem.className = 'topping-item-summary';
-
-        var itemSpan = document.createElement('span');
-        itemSpan.classList.add('item');
-        itemSpan.innerText = name;
-
-        var priceSpan = document.createElement('span');
-        priceSpan.classList.add('price');
-        priceSpan.innerText = `$${price}`;
-        
-        listItem.appendChild(itemSpan);
-        listItem.appendChild(priceSpan);
-        
-        summaryList.appendChild(listItem);
-      });
+      return (
+        <ul>
+          { 
+            selectedToppings.map(selectedTopping => (
+              <li key={selectedTopping.name} className="topping-item-summary">
+                <span className="item">
+                  {selectedTopping.name}              
+                </span>
+                <span className="price">
+                  {`$${selectedTopping.price}`}      
+                </span>                  
+              </li>    
+            ))                   
+          }
+        </ul>
+      );
     }
 
-    function renderTotalPrice(selectedToppings) {
-      var pizzaPrice = 9.99;
-
-      // var totalPrice = selectedToppings.reduce(function(price, currentTopping) {
-      //   var price = currentTopping.price;
-
-      //   return price += price;
-      // }, pizzaPrice);
-
-      var totalPrice = pizzaPrice;
-      selectedToppings.forEach(function(topping) {
-        var price = topping.price;
-
-        totalPrice += price;
-      });
-
-      var displayPrice = totalPrice.toFixed(2);
-
-      document.querySelector('span#totalPrice').innerText = displayPrice;
+    function renderTotalPrice(selectedToppings) {    
+      return (<span>{calculateTotalPrice(selectedToppings)}</span>);
     }
 
-    function render() {
-      renderToppingsForm(selectedToppings, onToppingClick);
-      renderSummaryList(selectedToppings);
-      renderTotalPrice(selectedToppings);
+    function calculateTotalPrice(selectedToppings){
+      let price = 9.99; 
+      selectedToppings.map(topping => {
+        price += topping.price;
+      });
+
+      return price.toFixed(2);   
     }
     
-    window.addEventListener('DOMContentLoaded', render);
+    function render() {
+      var app = (
+        <section className="pizza-creator-app">
+          <h1>Pizza Creator</h1>
+          <section className="pizza-viewer">
+            <div className="pizza">
+              <div className="pizza-board">
+                <img src="./assets/board.svg" alt="Pizza board" />
+              </div>
+              <div className="pizza-base">
+                <img src="./assets/base.svg" alt="Pizza base" />
+              </div>
+              <div className="pizza-toppings">
+                {
+                  <img src="./assets/toppings/anchovies.svg" alt="Anchovies" />
+                  <img src="./assets/toppings/bacons.svg" alt="Bacons" />
+                  <img src="./assets/toppings/basils.svg" alt="Basils" />
+                  <img src="./assets/toppings/chilies.svg" alt="Chilies" />
+                  <img src="./assets/toppings/mozzarellas.svg" alt="Mozzarellas" />
+                  <img src="./assets/toppings/mushrooms.svg" alt="Mushrooms" />
+                  <img src="./assets/toppings/olives.svg" alt="Olives" />
+                  <img src="./assets/toppings/onions.svg" alt="Onions" />
+                  <img src="./assets/toppings/peppers.svg" alt="Peppers" />
+                }
+              </div>
+            </div>
+          </section>
+          <section className="form">
+            <form action="">
+              <section className="details">
+                <h2>Enter your details</h2>
+                <div className="details-container">
+                  <div className="detail">
+                    <label>Name</label>
+                    <input type="text" id="name" name="name" />
+                  </div>
+                  <div className="detail">
+                    <label>Email</label>
+                    <input type="text" id="email" name="email" />
+                  </div>
+                  <div className="detail">
+                    <label>Confirm email</label>
+                    <input type="text" id="confirm_email" name="confirm_email" />
+                  </div>
+                  <div className="detail">
+                    <label>Address</label>
+                    <input type="text" id="address" name="address" />
+                  </div>
+                  <div className="detail">
+                    <label>Postcode</label>
+                    <input type="text" id="postcode" name="postcode" />
+                  </div>
+                  <div className="detail">
+                    <label>Contact number</label>
+                    <input type="text" id="contact_number" name="contact_number" />
+                  </div>
+                </div>
+              </section>
+              <section className="toppings">
+                <h2>Choose your toppings</h2>
+                {renderToppingsForm(selectedToppings, onToppingClick)}
+                {
+                  // <ToppingsForm selectedToppings={selectedToppings} onToppingClick={onToppingClick} />
+                }
+              </section>
+              <section className="summary">
+                <h2>Summary</h2>
+                <ul className="items">
+                  <li>
+                    <span className="item">Pizza</span>
+                    <span className="price">$9.99</span>
+                    {renderSummaryList(selectedToppings)}  
+                    {
+                      // <SummaryList selectedToppings={selectedToppings} />
+                    }
+                  </li>
+                </ul>
+                <hr />
+                <p className="total-price">
+                  Total: ${renderTotalPrice(selectedToppings)}
+                  {
+                    // Total: <TotalPrice selectedToppings={selectedToppings} />
+                  }
+                </p>
+                <p>
+                  <button type="submit">
+                    Place order
+                  </button>
+                </p>
+              </section>
+            </form>
+          </section>
+        </section>
+      );
+
+      ReactDOM.render(app, document.querySelector('#app'));
+    }
+    
+    render();
   </script>
 </head>
 
 <body>
-  <section class="pizza-creator-app">
-    <h1>Pizza Creator</h1>
-    <section class="pizza-viewer">
-      <div class="pizza">
-        <div class="pizza-board">
-          <img src="./assets/board.svg" alt="Pizza board">
-        </div>
-        <div class="pizza-base">
-          <img src="./assets/base.svg" alt="Pizza base">
-        </div>
-        <div class="pizza-toppings">
-          <img src="./assets/toppings/anchovies.svg" alt="Anchovies">
-          <img src="./assets/toppings/bacons.svg" alt="Bacons">
-          <img src="./assets/toppings/basils.svg" alt="Basils">
-          <img src="./assets/toppings/chilies.svg" alt="Chilies">
-          <img src="./assets/toppings/mozzarellas.svg" alt="Mozzarellas">
-          <img src="./assets/toppings/mushrooms.svg" alt="Mushrooms">
-          <img src="./assets/toppings/olives.svg" alt="Olives">
-          <img src="./assets/toppings/onions.svg" alt="Onions">
-          <img src="./assets/toppings/peppers.svg" alt="Peppers">
-        </div>
-      </div>
-    </section>
-    <section class="form">
-      <form action="">
-        <section class="details">
-          <h2>Enter your details</h2>
-          <div class="details-container">
-            <div class="detail">
-              <label for="name">Name</label>
-              <input type="text" id="name" name="name">
-            </div>
-            <div class="detail">
-              <label for="email">Email</label>
-              <input type="text" id="email" name="email">
-            </div>
-            <div class="detail">
-              <label for="confirm_email">Confirm email</label>
-              <input type="text" id="confirm_email" name="confirm_email">
-            </div>
-            <div class="detail">
-              <label for="address">Address</label>
-              <input type="text" id="address" name="address">
-            </div>
-            <div class="detail">
-              <label for=postcode "">Postcode</label>
-              <input type="text" id="postcode" name="postcode">
-            </div>
-            <div class="detail">
-              <label for="contact_number">Contact number</label>
-              <input type="text" id="contact_number" name="contact_number">
-            </div>
-          </div>
-        </section>
-        <section class="toppings">
-          <h2>Choose your toppings</h2>
-          <div class="toppings-container" id="toppingsContainer"></div>
-        </section>
-        <section class="summary">
-          <h2>Summary</h2>
-          <ul class="items">
-            <li>
-              <span class="item">Pizza</span>
-              <span class="price">$9.99</span>
-              <ul id="summaryList"></ul>
-              </ul>
-            </li>
-          </ul>
-          <hr>
-          <p class="total-price">
-            Total: $<span id="totalPrice"></span>
-          </p>
-          <p>
-            <button type="submit">
-              Place order
-            </button>
-          </p>
-        </section>
-      </form>
-    </section>
-  </section>
+  <div id="app"></div>
 </body>
-
 </html>

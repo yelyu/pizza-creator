@@ -218,114 +218,38 @@
         price: 0.99,
       }];
       
-    var pizzaPrice = 9.99;
     var selectedToppings = [];
-    var totalPrice = pizzaPrice;
-
-    function higherOrderFunction() {
-      return function () {};
-    }
 
     function onToppingClick(topping) {
       return function() {
-        var name = topping.name;
-        
-        if (selectedToppings.includes(name)) {
-          removeTopping(topping);
-          return;
+        if (selectedToppings.includes(topping)) {
+          var index = selectedToppings.indexOf(topping);
+          selectedToppings.splice(index, 1);
+        } else {
+          selectedToppings.push(topping);
         }
 
-        addTopping(topping);
+        render();
       }
     }
 
-    function activeToppingFormButton(topping) {
-      var name = topping.name;
-      var toppingBtn = document.querySelector(`button.topping#${name}`);
+    function renderToppingsForm(selectedToppings, onBtnClick) {
+      var toppingsContainer = document.querySelector('#toppingsContainer');
+      toppingsContainer.innerHTML = '';
 
-      selectedToppings.push(name);
-      toppingBtn.classList.add('active');
-    }
-
-    function addToppingPriceSummary(topping) {
-      var price = topping.price;
-      var name = topping.name;
-      var summaryList = document.querySelector(`ul#summaryList`);
-
-      var listItem = document.createElement('li');
-      listItem.className = 'topping-item-summary';
-      listItem.id = name;
-
-      var itemSpan = document.createElement('span');
-      itemSpan.classList.add('item');
-      itemSpan.innerText = name;
-
-      var priceSpan = document.createElement('span');
-      priceSpan.classList.add('price');
-      priceSpan.innerText = `$${price}`;
-      
-      renderTotalPriceOnToppingAdd(topping);
-
-      listItem.appendChild(itemSpan);
-      listItem.appendChild(priceSpan);
-      
-      summaryList.appendChild(listItem);
-    }
-
-    function addTopping(topping) {
-      activeToppingFormButton(topping);
-      addToppingPriceSummary(topping);
-      displayAddToppingSuccessMessage(topping);
-      addToppingToToppingBaseImage(topping);
-    }
-
-    function removeTopping(topping) {
-      var name = topping.name;
-      var price = topping.price;
-      var toppingBtn = document.querySelector(`button.topping#${name}`);
-      var summaryList = document.querySelector(`ul#summaryList`);
-
-      var index = selectedToppings.indexOf(name);
-      selectedToppings.splice(index, 1);
-      
-      toppingBtn.classList.remove('active');
-
-      var listItem = summaryList.querySelector(`li.topping-item-summary#${name}`);
-      listItem.remove();
-
-      renderTotalPriceOnToppingRemoved(topping);
-
-      var name;
-    }
-
-    function renderTotalPriceOnToppingAdd(topping) {
-      var price = topping.price;
-      totalPrice += price;
-      renderTotalPrice();
-    }
-
-    function renderTotalPriceOnToppingRemoved(topping) {
-      var price = topping.price;
-      totalPrice -= price;
-      renderTotalPrice();
-    }
-
-    function renderTotalPrice() {
-      displayPrice = totalPrice.toFixed(2);
-      document.querySelector('span#totalPrice').innerText = displayPrice;
-    }
-
-    function renderToppingsForm() {
       for (var i = 0; i < toppings.length; i++) {
         var topping = toppings[i];
         var btn = document.createElement('button');
         btn.type = 'button';
         btn.id = topping.name;
         btn.classList.add('topping');
-
-        const func = onToppingClick(topping);
         
+        const func = onBtnClick(topping);
         btn.onclick = func;
+
+        if (selectedToppings.includes(topping)) {
+          btn.classList.add('active');
+        }
 
         var img = document.createElement('img');
         img.src = topping.labelImage;
@@ -337,16 +261,64 @@
         btn.appendChild(img);
         btn.appendChild(span);
 
-        document.querySelector('#toppingsContainer').appendChild(btn);
+        toppingsContainer.appendChild(btn);
       }
     }
 
-    function main() {
-      renderToppingsForm();
-      renderTotalPrice();
+    function renderSummaryList(selectedToppings) {
+      var summaryList = document.querySelector(`ul#summaryList`);
+      summaryList.innerHTML = '';
+
+      selectedToppings.forEach(topping => {
+        var price = topping.price;
+        var name = topping.name;
+
+        var listItem = document.createElement('li');
+        listItem.className = 'topping-item-summary';
+
+        var itemSpan = document.createElement('span');
+        itemSpan.classList.add('item');
+        itemSpan.innerText = name;
+
+        var priceSpan = document.createElement('span');
+        priceSpan.classList.add('price');
+        priceSpan.innerText = `$${price}`;
+        
+        listItem.appendChild(itemSpan);
+        listItem.appendChild(priceSpan);
+        
+        summaryList.appendChild(listItem);
+      });
+    }
+
+    function renderTotalPrice(selectedToppings) {
+      var pizzaPrice = 9.99;
+
+      // var totalPrice = selectedToppings.reduce(function(price, currentTopping) {
+      //   var price = currentTopping.price;
+
+      //   return price += price;
+      // }, pizzaPrice);
+
+      var totalPrice = pizzaPrice;
+      selectedToppings.forEach(function(topping) {
+        var price = topping.price;
+
+        totalPrice += price;
+      });
+
+      var displayPrice = totalPrice.toFixed(2);
+
+      document.querySelector('span#totalPrice').innerText = displayPrice;
+    }
+
+    function render() {
+      renderToppingsForm(selectedToppings, onToppingClick);
+      renderSummaryList(selectedToppings);
+      renderTotalPrice(selectedToppings);
     }
     
-    window.addEventListener('DOMContentLoaded', main);
+    window.addEventListener('DOMContentLoaded', render);
   </script>
 </head>
 

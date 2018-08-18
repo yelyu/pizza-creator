@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>New Pizza Creator</title>
+  <style>
+    body {
+      margin: 0;
+      font: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+
+    h1 {
+      display: none;
+    }
+
+    .pizza-creator-app {
+      display: flex;
+      margin-left: -2rem;
+      min-height: 100vh;
+    }
+
+    .pizza-creator-app>* {
+      padding-left: 2rem;
+    }
+
+    .pizza-viewer {
+      background: #3A424F;
+    }
+
+    .pizza {
+      width: 500px;
+      height: 350px;
+      position: relative;
+    }
+
+    .pizza>* {
+      position: absolute;
+    }
+
+    .pizza>.pizza-base {
+      width: 75%;
+      left: 90px;
+    }
+
+    .pizza>.pizza-toppings {
+      width: 70%;
+      left: 100px;
+    }
+
+    .pizza>.pizza-board {
+      width: 100%;
+    }
+
+    .pizza img {
+      margin: 100px 20px 0;
+    }
+
+    .pizza-toppings img {
+      margin-top: 120px;
+      position: absolute;
+    }
+
+    .form {
+      width: 100%;
+      padding-right: 2rem;
+      height: 100vh;
+      overflow: auto;
+    }
+
+    h2 {
+      color: #6E7790;
+      font-size: 22px;
+      font-weight: 300;
+      margin: 2rem 0;
+    }
+
+    .place-order {
+      margin-top: 2rem;
+    }
+
+    .details-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 2rem;
+    }
+
+    .detail label {
+      display: block;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: #6E7790;
+    }
+
+    .detail input {
+      border-radius: 2px;
+      border: 1px solid #d7d7e7;
+      font-size: 1.2rem;
+      color: rgba(0, 0, 0, 0.8);
+      padding: 0.5rem 1rem;
+      outline: none;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .toppings-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 2rem;
+    }
+
+    .topping {
+      display: flex;
+      align-items: center;
+      background: #f2f2f2;
+      cursor: pointer;
+      box-sizing: border-box;
+      padding: 0;
+      border: 0;
+      outline: 0;
+    }
+
+    .topping.active {
+      background: #1a98e1;
+      color: white;
+    }
+
+    .topping img {
+      width: 40px;
+      height: 40px;
+      padding: 5px;
+      box-sizing: border-box;
+      background: #e6e6e6;
+      margin-right: 1rem;
+    }
+
+    .summary li {
+      margin: 1rem 0;
+    }
+
+    .summary .price {
+      float: right;
+    }
+
+    .summary .total-price {
+      font-size: 1.5rem;
+      text-align: right;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      background: #98C550;
+      border: none;
+      padding: 10px 15px;
+      text-align: center;
+      font-size: 1.2rem;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+      background: #90ce2e;
+    }
+  </style>
+  <script>
+    var toppings = [{
+        name: 'Anchovy',
+        labelImage: './assets/toppings/anchovy.svg',
+        price: 0.99,
+      }, {
+        name: 'Bacon',
+        labelImage: './assets/toppings/bacon.svg',
+        price: 0.99,
+      }, {
+        name: 'Basil',
+        labelImage: './assets/toppings/basil.svg',
+        price: 0.99,
+      }, {
+        name: 'Chili',
+        labelImage: './assets/toppings/chili.svg',
+        price: 0.99,
+      }, {
+        name: 'Mozzarella',
+        labelImage: './assets/toppings/mozzarella.svg',
+        price: 0.99,
+      }, {
+        name: 'Mushroom',
+        labelImage: './assets/toppings/mushroom.svg',
+        price: 0.99,
+      }, {
+        name: 'Olive',
+        labelImage: './assets/toppings/olive.svg',
+        price: 0.99,
+      }, {
+        name: 'Onion',
+        labelImage: './assets/toppings/onion.svg',
+        price: 0.99,
+      }, {
+        name: 'Pepper',
+        labelImage: './assets/toppings/pepper.svg',
+        price: 0.99,
+      }, {
+        name: 'Pepperoni',
+        labelImage: './assets/toppings/pepperoni.svg',
+        price: 0.99,
+      }, {
+        name: 'Peppers',
+        labelImage: './assets/toppings/peppers.svg',
+        price: 0.99,
+      }, {
+        name: 'Sweetcorn',
+        labelImage: './assets/toppings/sweetcorn.svg',
+        price: 0.99,
+      }];
+      
+    var pizzaPrice = 9.99;
+    var selectedToppings = [];
+    var totalPrice = pizzaPrice;
+
+    function higherOrderFunction() {
+      return function () {};
+    }
+
+    function onToppingClick(topping) {
+      return function() {
+        var name = topping.name;
+        
+        if (selectedToppings.includes(name)) {
+          removeTopping(topping);
+          return;
+        }
+
+        addTopping(topping);
+      }
+    }
+
+    function activeToppingFormButton(topping) {
+      var name = topping.name;
+      var toppingBtn = document.querySelector(`button.topping#${name}`);
+
+      selectedToppings.push(name);
+      toppingBtn.classList.add('active');
+    }
+
+    function addToppingPriceSummary(topping) {
+      var price = topping.price;
+      var name = topping.name;
+      var summaryList = document.querySelector(`ul#summaryList`);
+
+      var listItem = document.createElement('li');
+      listItem.className = 'topping-item-summary';
+      listItem.id = name;
+
+      var itemSpan = document.createElement('span');
+      itemSpan.classList.add('item');
+      itemSpan.innerText = name;
+
+      var priceSpan = document.createElement('span');
+      priceSpan.classList.add('price');
+      priceSpan.innerText = `$${price}`;
+      
+      renderTotalPriceOnToppingAdd(topping);
+
+      listItem.appendChild(itemSpan);
+      listItem.appendChild(priceSpan);
+      
+      summaryList.appendChild(listItem);
+    }
+
+    function addTopping(topping) {
+      activeToppingFormButton(topping);
+      addToppingPriceSummary(topping);
+      displayAddToppingSuccessMessage(topping);
+      addToppingToToppingBaseImage(topping);
+    }
+
+    function removeTopping(topping) {
+      var name = topping.name;
+      var price = topping.price;
+      var toppingBtn = document.querySelector(`button.topping#${name}`);
+      var summaryList = document.querySelector(`ul#summaryList`);
+
+      var index = selectedToppings.indexOf(name);
+      selectedToppings.splice(index, 1);
+      
+      toppingBtn.classList.remove('active');
+
+      var listItem = summaryList.querySelector(`li.topping-item-summary#${name}`);
+      listItem.remove();
+
+      renderTotalPriceOnToppingRemoved(topping);
+
+      var name;
+    }
+
+    function renderTotalPriceOnToppingAdd(topping) {
+      var price = topping.price;
+      totalPrice += price;
+      renderTotalPrice();
+    }
+
+    function renderTotalPriceOnToppingRemoved(topping) {
+      var price = topping.price;
+      totalPrice -= price;
+      renderTotalPrice();
+    }
+
+    function renderTotalPrice() {
+      displayPrice = totalPrice.toFixed(2);
+      document.querySelector('span#totalPrice').innerText = displayPrice;
+    }
+
+    function renderToppingsForm() {
+      for (var i = 0; i < toppings.length; i++) {
+        var topping = toppings[i];
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.id = topping.name;
+        btn.classList.add('topping');
+
+        const func = onToppingClick(topping);
+        
+        btn.onclick = func;
+
+        var img = document.createElement('img');
+        img.src = topping.labelImage;
+        img.alt = topping.name;
+
+        var span = document.createElement('span');
+        span.innerText = topping.name;
+
+        btn.appendChild(img);
+        btn.appendChild(span);
+
+        document.querySelector('#toppingsContainer').appendChild(btn);
+      }
+    }
+
+    function main() {
+      renderToppingsForm();
+      renderTotalPrice();
+    }
+    
+    window.addEventListener('DOMContentLoaded', main);
+  </script>
+</head>
+
+<body>
+  <section class="pizza-creator-app">
+    <h1>Pizza Creator</h1>
+    <section class="pizza-viewer">
+      <div class="pizza">
+        <div class="pizza-board">
+          <img src="./assets/board.svg" alt="Pizza board">
+        </div>
+        <div class="pizza-base">
+          <img src="./assets/base.svg" alt="Pizza base">
+        </div>
+        <div class="pizza-toppings">
+          <img src="./assets/toppings/anchovies.svg" alt="Anchovies">
+          <img src="./assets/toppings/bacons.svg" alt="Bacons">
+          <img src="./assets/toppings/basils.svg" alt="Basils">
+          <img src="./assets/toppings/chilies.svg" alt="Chilies">
+          <img src="./assets/toppings/mozzarellas.svg" alt="Mozzarellas">
+          <img src="./assets/toppings/mushrooms.svg" alt="Mushrooms">
+          <img src="./assets/toppings/olives.svg" alt="Olives">
+          <img src="./assets/toppings/onions.svg" alt="Onions">
+          <img src="./assets/toppings/peppers.svg" alt="Peppers">
+        </div>
+      </div>
+    </section>
+    <section class="form">
+      <form action="">
+        <section class="details">
+          <h2>Enter your details</h2>
+          <div class="details-container">
+            <div class="detail">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name">
+            </div>
+            <div class="detail">
+              <label for="email">Email</label>
+              <input type="text" id="email" name="email">
+            </div>
+            <div class="detail">
+              <label for="confirm_email">Confirm email</label>
+              <input type="text" id="confirm_email" name="confirm_email">
+            </div>
+            <div class="detail">
+              <label for="address">Address</label>
+              <input type="text" id="address" name="address">
+            </div>
+            <div class="detail">
+              <label for=postcode "">Postcode</label>
+              <input type="text" id="postcode" name="postcode">
+            </div>
+            <div class="detail">
+              <label for="contact_number">Contact number</label>
+              <input type="text" id="contact_number" name="contact_number">
+            </div>
+          </div>
+        </section>
+        <section class="toppings">
+          <h2>Choose your toppings</h2>
+          <div class="toppings-container" id="toppingsContainer"></div>
+        </section>
+        <section class="summary">
+          <h2>Summary</h2>
+          <ul class="items">
+            <li>
+              <span class="item">Pizza</span>
+              <span class="price">$9.99</span>
+              <ul id="summaryList"></ul>
+              </ul>
+            </li>
+          </ul>
+          <hr>
+          <p class="total-price">
+            Total: $<span id="totalPrice"></span>
+          </p>
+          <p>
+            <button type="submit">
+              Place order
+            </button>
+          </p>
+        </section>
+      </form>
+    </section>
+  </section>
+</body>
+
+</html>

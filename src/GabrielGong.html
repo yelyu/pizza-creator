@@ -7,99 +7,229 @@
     <title>Pizza creator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <style>
+    body {
+        margin: 0;
+        font:  -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+        }
+    h1  {
+        display: none;
+        }
+
+    .pizza-creator {
+      display: flex;
+      margin-left: -2rem;
+      min-height: 100vh;
+    }
+    .pizza-creator > * {
+      padding-left: 2rem;
+    }
+
+    .detailsForm {
+      width: 100%;
+      padding-right: 2rem;
+      height: 100vh;
+      overflow: auto;
+    }
+
+    h2 {
+        color:#6E7790;
+        font-size: 22px;
+        font-weight: 300;
+        margin: 2rem 0;
+    }
+
+    .details {
+        display:grid;
+        grid-template-columns: repeat(3,1fr);
+        grid-gap:2rem
+    }
+
+    .details label {
+        display:block;
+        margin-bottom:0.5rem;
+        font-size:0.8rem;
+        font-weight:bold;
+        color:#6E7790;
+    }
+
+    .details input {
+        border-radius: 2px;
+        border: 1px solid #d7d7e7;
+        font-size: 1.2rem;
+        color: rgba(o,o,o,0,8);
+        padding: 0.5rem 1rem;
+        outline: none;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .choose-toppings {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 2rem;
+    }
+
+    .toppings {
+        display: flex;
+        align-items: center;
+        background: #f2f2f2;
+        cursor: pointer;
+        box-sizing: border-box;
+        padding: 0;
+        border: 0;
+        outline: 0;
+    }
+
+     .toppingsPic img {
+      margin-top: 120px;
+      position: absolute;
+    }
+
+    .toppings img{
+        width: 40px;
+        height: 40px;
+        padding: 5px;
+        box-sizing: border-box;
+        margin-right : 1rem;
+    }
+
+    .summary li{
+        margin: 1rem;
+    }
+    
+    .summary .price {
+        float: right;
+    }
+    
+    .summary .total{
+        font-size : 1.5rem;
+        text-align: right;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+        background: #98C550;
+        border: none;
+        padding: 10px 15px;
+        text-align: center;
+        font-size: 1.2rem;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+     button[type="submit"]:hover {
+        background: #90CE2E;
+     }
+
+    </style>
     <script src="main.js"></script>
 </head>
 
 <body>
+  <section class = "pizza-creator">  <!-- whole pizza-creator section create-->
     <h1>Pizza Creator</h1>
-    <section>
-        <h2>Enter your details</h2>
+    <section class="pizza-viewer">
+        <div class="pizza">
+          <div class="pizza-board">
+            <img src="./assets/board.svg" alt="Pizza board">
+          </div>
+          <div class="pizza-base">
+            <img src="./assets/base.svg" alt="Pizza base">
+          </div>
+        </section>
+    
+    <section "detailsForm">  <!--details container -->
+     <form action"">
+    <section class="Enter-details">  <!-- first section create-->
+     <h2>Enter your details</h2>
+        <div class = "details">
+            <div>
+                <label class="detail">Name</label>
+                <input type="text" name = "Name" id = "name">
+            </div>
+
+            <div>
+                <label class="detail">EMAIL</label>
+                <input type="text" name = "Email" id = "email">
+            </div>
+
+            <div>
+                <label class="detail">CONFIRM EMAIL</label>
+                <input type="text" name = "Confirm Email" id = "confirm-email">
+            </div>
+
+            <div>
+                <label class="detail">ADDRESS</label>
+                <input type="text" name = "Address" id = "address">
+            </div>
+
+            <div>
+                <label class="detail">POSTCODE</label>
+                <input type="text" name = "Postcode" id = "postcode">
+            </div>
+
+            <div>
+                <label class="detail">CONTACT NUMBER</label>
+                <input type="text" name = "Contact Number" id = "contact-number">
+            </div>
+        </div>
+     </section>
     </section>
 
-    <section>
-        <form>
-            <div>
-                <label>Name</label>
-                <input type="text">
-            </div>
-
-            <div>
-                <label>EMAIL</label>
-                <input type="text">
-            </div>
-
-            <div>
-                <label>CONFIRM EMAIL</label>
-                <input type="text">
-            </div>
-            <div>
-                <label>ADDRESS</label>
-                <input type="text">
-            </div>
-            <div>
-                <label>POSTCODE</label>
-                <input type="text">
-            </div>
-            <div>
-                <label>CONTACT NUMBER</label>
-                <input type="text">
-            </div>
-    </section>
-
-    <section>
+    <section class = "choose-toppings">    <!-- second section create-->
         <h2>Choose You Toppings </h2>
-        <div>
+        <section class = "toppings">  <!--toppings container-->
+        <div class="toppingsPic">
             <img src="assets/toppings/anchovy.svg" alt="Anchovy"> Anchovy
-        </div>
-
-        <div>
             <img src="assets/toppings/bacon.svg" alt="Bacon"> Bacon
-        </div>
-
-        <div>
             <img src="assets/toppings/basil.svg" alt="Basil"> Basil
-        </div>
-
-        <div>
-            <img src="assets/toppings/chilli.svg" alt="Chilli"> Chilli
-        </div>
-        <div>
+            <img src="assets/toppings/chili.svg" alt="Chili"> Chili
             <img src="assets/toppings/mozzarella.svg" alt="Mozzarella"> Mozzarella
-        </div>
-        <div>
-            <img src="assets/toppings/mozzarella.svg" alt="Mozzarella"> Mozzarella
-        </div>
-        <div>
-            <img src="assets/toppings/mozzarella.svg" alt="Mozzarella"> Mozzarella
-        </div>
-        <div>
-            <img src="assets/toppings/mozzarella.svg" alt="Mozzarella"> Mozzarella
-        </div>
+            <img src="assets/toppings/mushroom.svg" alt="Mushroom"> Mushroom
+            <img src="assets/toppings/olive.svg" alt="Olive"> Olive
+            <img src="assets/toppings/onion.svg" alt="Onion"> Onion
+            <img src="assets/toppings/pepperoni.svg" alt="Pepperoni"> Pepperoni
+            <img src="assets/toppings/peppers.svg" alt="Peppers">Peppers
+            <img src="assets/toppings/sweetcorn.svg" alt="Sweetcorn"> Sweetcorn
+            </div>
+        </section>
     </section>
 
-    <section>
-        <div>
+    <section class = "summary">  <!-- third section create-->
             <h2>Summary:</h2>
-        </div>
-    </section>
-
-    <section>
-        <div>
-            <ul>
-                <li>Pizza $9.99</li>
+            <ul class = "order-items">
+                <li>
+                        <span class="item">Pizza</span>
+                        <span class="price">$9.99</span>
                 <ul>
-                    <li>Onion $0.99</li>
-                    <li>Mushroom $0.99</li>
-                    <li>Bacon $0.99</li>
-                    <li>Anchovy $0.99</li>
+                    <li>
+                        <span class="item">Onion</span>
+                        <span class="price">$0.99</span>
+                    </li>
+                    <li>
+                        <span class="item">Mushroom</span>
+                        <span class="price">$0.99</span>
+                    </li>
+                    <li>
+                            <span class="item"> Beacon</span>
+                            <span class="price">$0.99</span>
+                        </li>
+                    <li>
+                        <span class="item">Anchovy</span>
+                        <span class="price">$0.99</span>
+                    </li>
                 </ul>
+                 </li>
             </ul>
-        </div>
-    </section>
     <hr>
-    <p>Total:$13.86</p>
-    <form>
-        <input type="button" name="Place Order">
+    <p class = "total">
+        Total:$13.86
+    </p>
+    <form action ="">
+        <button type="submit" name="Place Order" Value = "Place Order">
     </form>
-
+    </section>
+</section>
+</body>
 </html>

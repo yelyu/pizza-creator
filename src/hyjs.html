@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="uft-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="hymain.css">
+    <!-- <link type="text/javascript" src="hy.js"> -->
+    <title>Pizza Creator</title>
+</head>
+<script>
+    //toppings
+    const toppings = {
+        "Anchovy": {
+            labelImage: './assets/toppings/anchovy.svg',
+            contentImage: './assets/toppings/anchovies.svg'
+        },
+        "Bacon": {
+            labelImage: './assets/toppings/bacon.svg',
+            contentImage: './assets/toppings/bacons.svg'
+        },
+        "Basil": {
+            labelImage: './assets/toppings/basil.svg',
+            contentImage: './assets/toppings/basils.svg'
+        },
+        "Chili": {
+            labelImage: './assets/toppings/chili.svg',
+            contentImage: './assets/toppings/chilies.svg'
+        },
+        "Mozzarella": {
+            labelImage: './assets/toppings/mozzarella.svg',
+            contentImage: './assets/toppings/mozzarellas.svg'
+        },
+        "Mushroom": {
+            labelImage: './assets/toppings/mushroom.svg',
+            contentImage: './assets/toppings/mushrooms.svg'
+        },
+        "Olive": {
+            labelImage: './assets/toppings/olive.svg',
+            contentImage: './assets/toppings/olives.svg'
+        },
+        "Onion": {
+            labelImage: './assets/toppings/onion.svg',
+            contentImage: './assets/toppings/onions.svg'
+        },
+        "Pepper": {
+            labelImage: './assets/toppings/pepper.svg',
+            contentImage: './assets/toppings/peppers.svg'
+        },
+        "Pepperoni": {
+            labelImage: './assets/toppings/pepperoni.svg',
+            contentImage: './assets/toppings/pepperoni.svg'
+        },
+        "Peppers": {
+            labelImage: './assets/toppings/peppers.svg',
+            contentImage: './assets/toppings/peppers.svg'
+        },
+        "Sweetcorn": {
+            labelImage: './assets/toppings/sweetcorn.svg',
+            contentImage: './assets/toppings/sweetcorn.svg'
+        },
+        "Tomato": {
+            labelImage: './assets/toppings/tomato.svg',
+            contentImage: './assets/toppings/tomato.svg'
+        }
+    }
+
+    var selectedToppings = [];
+    var summaryPrice = 9.99;
+
+    function addToppingsContent(name, labelImage, contentImage, toppings) {
+        toppings[name] = {
+            labelImage: labelImage,
+            contentImage: contentImage
+        }
+        return toppings
+    }
+
+    function initializeToppingsChoiceForm() {
+        const toppingsChoiceForm = document.getElementById('toppingsChoiceForm');
+        for (var n in toppings) {
+            if (toppings.hasOwnProperty(n)) {
+                //debugger;
+                var img = document.createElement('img');
+                img.src = toppings[n].labelImage;
+                img.alt = n;
+
+                var span = document.createElement('span');
+                span.innerText = n;
+
+                var btn = document.createElement('button');
+                btn.className = 'topping';
+                btn.type = 'button';
+                btn.id = n;
+
+                btn.appendChild(img);
+                btn.appendChild(span);
+
+                btn.onclick = toppingOnClick;
+
+                document.querySelector('#toppingsChoiceForm').appendChild(btn);
+
+            }
+        }
+    }
+
+    //click button event 
+    function clickActive(node) {
+        var name = node.id;
+        if (selectedToppings.includes(name)) {
+            selectedToppings.splice(selectedToppings.indexOf(name), 1);
+            node.classList.remove("active");
+            // need to redirect to li node 
+            summaryListRemover(node);
+            reducePrice();
+            showPrice()
+            return;
+        }
+
+        node.classList.add("active");
+        selectedToppings.push(name);
+        summaryListGenerator(node);
+        // addToppings(node);
+        addPrice();
+        showPrice();
+    }
+
+    //check if current target is button
+    function toppingOnClick(event) {
+        var tagName = event.target.tagName;
+
+        if (tagName === "BUTTON") {
+            clickActive(event.target);
+        } else {
+            clickActive(event.target.parentNode);
+        }
+    }
+
+    //summary list
+    function summaryListGenerator(element) {
+        // element : n.target
+        var li = document.createElement('li');
+        li.id = element.id + "li";
+
+        var name = document.createElement('span');
+        name.innerText = element.id;
+
+        var price = document.createElement('span');
+        price.innerText = "$0.99";
+
+        li.appendChild(price);
+        li.appendChild(name);
+
+        document.querySelector('#summaryForm').appendChild(li);
+    }
+
+    function summaryListRemover(element) {
+        var liId = element.id + "li";
+        //redirect to li node 
+        liNode = document.getElementById(liId);
+        liNode.parentNode.removeChild(liNode);
+    }
+
+    //functions on summary price
+    function addPrice() {
+        summaryPrice += 0.9;
+    }
+
+    function reducePrice() {
+        summaryPrice -= 0.9;
+    }
+
+    function showPrice() {
+        var price = document.getElementById('price');
+        price.innerHTML = "$" + summaryPrice.toFixed(2);
+    }
+
+    //functions on viewer
+    function addToppings(element) {
+
+        img = document.createElement('img');
+        img.src = toppings[element.id].contentImage;
+        img.className = "img";
+
+        document.getElementsByClassName("pizzaToppings")[0].appendChild(img);
+
+    }
+
+    function removeToppings(element) {}
+
+    //main
+    window.addEventListener('DOMContentLoaded', () => {
+        initializeToppingsChoiceForm();
+    });
+</script>
+
+<body>
+    <section class="pizzaCreatorMainViewer">
+        <h1>Pizza Creator</h1>
+        <!--viewer section-->
+        <section class="pizzaViewer">
+            <div class="pizza">
+                <div class="pizzaBoard">
+                    <img src="assets/board.svg" alt="None">
+                </div>
+                <div class="pizzaBase">
+                    <img src="assets/base.svg" alt="none">
+                </div>
+                <div class="pizzaToppings"></div>
+            </div>
+        </section>
+        <!--form section-->
+        <section class="form">
+            <form>
+                <!--enter details section-->
+                <section>
+                    <h2>Enter your details</h2>
+                    <div class="detailsContainer">
+                        <div class="detail">
+                            <label for="name">NAME</label>
+                            <input id="name" type="text" name="name">
+                        </div>
+                        <div class="detail">
+                            <label for="email">EMAIL</label>
+                            <input id="email" type="text" name="name">
+                        </div>
+                        <div class="detail">
+                            <label for="confirmEmail">CONFIRM EMAIL</label>
+                            <input id="confirmEmail" type="text" name="name">
+                        </div>
+                        <div class="detail">
+                            <label for="address">ADDRESS</label>
+                            <input id="address" type="text" name="name">
+                        </div>
+                        <div class="detail">
+                            <label for="postcode">POSTCODE</label>
+                            <input id="postcode" type="text" name="name">
+                        </div>
+                        <div class="detail">
+                            <label for="contact">CONTACT NUMBER</label>
+                            <input id="contact" type="text" name="name">
+                        </div>
+                    </div>
+                </section>
+                <!--choose toppings section-->
+                <section>
+                    <h2>Choosing your toppings</h2>
+                    <div class="toppingContainer" id="toppingsChoiceForm"></div>
+                </section>
+                <!--summary section-->
+                <section>
+                    <h2>Summary</h2>
+                    <ul class="items">
+                        <li>
+                            <span>$9.99</span>
+                            <span>Pizza</span>
+                            <ul id="summaryForm"></ul>
+                        </li>
+                    </ul>
+                    <hr>
+                    <p class="totalPrice">
+                        <span>Total Price:</span>
+                        <span id="price">$9.99</span>
+                    </p>
+                    <div>
+                        <button type="submit">Place order</button>
+                    </div>
+                </section>
+            </form>
+        </section>
+    </section>
+</body>
+
+</html>

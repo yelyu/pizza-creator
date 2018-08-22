@@ -121,15 +121,21 @@ h2 {
     display: flex;
     align-items: center;
     background: #f2f2f2;
-    cursor: progress;
+    cursor: pointer;
     box-sizing: border-box;
     padding: 0;
     border: 0;
     outline: 0;
 }
 
+.topping.active {
+    background: #1a98e1;
+    color: white;
+}
+
 .topping img {
     width: 30%;
+    height: 100%;
     padding: 3%;
     box-sizing: border-box;
     background: #e6e6e6;
@@ -176,5 +182,5 @@ button[type="submit"] {
     font-size: 1.2rem;
     color: white;
     border-radius: 5px;
-    cursor: progress;
+    cursor: pointer;
 }

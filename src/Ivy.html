@@ -63,7 +63,6 @@
         }
 
         .form {
-
             width: 100%;
             padding-right: 2rem;
             margin: 2rem;
@@ -219,81 +218,106 @@
             price: 0.99,
         }];
 
+        var pizzaPrice = 9.99;
         var selectedToppings = []; //存在数组里，存是否被点击的状态
-        var totalPrice = 9.99;
-        
+        var totalPrice = pizzaPrice;
+
 
         function higherOrderFunction() {
             return function () { };
         }
 
         function onToppingClick(topping) {
-            //turn blue
-            //sourceElement,target
-            //传参数，或用this，搞到button
-            // btn.classList.add('active');
-            //    console.log(this);
-            //    this.classList.add('active');
-
-            //点过or没点过
+            var listItem = document.createElement('li');
             return function () {
                 var name = topping.name;
-                var price = topping.price;
-                var toppingBtn = document.querySelector(`button.topping#${name}`);//这是什么！！！！！！！！！！！！！！！
-                var summaryList = document.querySelector(`ul#summaryList`);
-
-                //if topping remove list,else put in list
-                //after edit list,calculate total
                 if (selectedToppings.includes(name)) {
-                    var index = selectedToppings.indexOf(name);
-                    selectedToppings.splice(index, 1);
-                    toppingBtn.classList.remove('active');
-                    //create
-                    //append
-                    //name
-                    //get price
-                   var listItem =  summaryList.querySelector(`li.topping-item-summary#${name}`);
-                   listItem.remove();
-
-                
-                   totalPrice -= price;
-                   displayPrice = totalPrice.toFixed(2);
-                   document.querySelector(`span#totalPrice`).innerText = displayPrice;
+                    removeTopping(topping);
                     return;
                 }
-                selectedToppings.push(name);
-                toppingBtn.classList.add('active');
-
-                //add into summaryList
-                var listItem = document.createElement('li');
-                listItem.className = "topping-item-summary";
-                listItem.id = name;
-
-                var itemSpan = document.createElement('span');
-                itemSpan.classList.add('item');
-                itemSpan.innerText = name;
-
-                var priceSpan = document.createElement('span');
-                priceSpan.classList.add('price');
-                priceSpan.innerText = `$${price}`;
-                
-                totalPrice += price;
-                displayPrice = totalPrice.toFixed(2);//返回字符串，display这个，计算还是叫totalPrice
-                document.querySelector(`span#totalPrice`).innerText = displayPrice;
-                
-
-                listItem.appendChild(itemSpan);
-                listItem.appendChild(priceSpan);
-                summaryList.appendChild(listItem);
-
-                //selectedToppings.push(ev.target.name);
+                addTopping(topping);
             }
         }
 
-        //如何点回去，humanbeing,
+        function removeActiveToppingFormButton(topping) {
+            var name = topping.name;
+            var toppingBtn = document.querySelector(`button.topping#${name}`);
+            var index = selectedToppings.indexOf(name);
+            selectedToppings.splice(index, 1);
+            toppingBtn.classList.remove('active');
+        }
+
+        function removeToppingPriceSummary(topping){
+            var price = topping.price;
+            var name = topping.name;
+            var summaryList = document.querySelector(`ul#summaryList`);
+            listItem = summaryList.querySelector(`li.topping-item-summary#${name}`);
+            listItem.remove();
+        }
+
+        function removeTopping(topping) {
+           removeActiveToppingFormButton(topping);
+           removeToppingPriceSummary(topping);
+            renderPriceOnToppingRemove(topping);
+        }
+        
+
+        function activeToppingFormButton(topping) {
+            var name = topping.name;
+            var toppingBtn = document.querySelector(`button.topping#${name}`);
+
+            selectedToppings.push(name);
+            toppingBtn.classList.add('active');
+        }
+
+        function addToppingPriceSummary(topping) {
+            var name = topping.name;
+            var price = topping.price;
+            var summaryList = document.querySelector(`ul#summaryList`);
+           
+            var listItem = document.createElement('li');
+            listItem.className = "topping-item-summary";
+            listItem.id = name;
+
+
+            var itemSpan = document.createElement('span');
+            itemSpan.classList.add('item');
+            itemSpan.innerText = name;
+
+            var priceSpan = document.createElement('span');
+            priceSpan.classList.add('price');
+            priceSpan.innerText = `$${price}`;
+
+            listItem.appendChild(itemSpan);
+            listItem.appendChild(priceSpan);
+            summaryList.appendChild(listItem);
+        }
+
+        function addTopping(topping) {
+            activeToppingFormButton(topping);
+            addToppingPriceSummary(topping);
+            renderPriceOnToppingAdd(topping);
+
+        }
+
+        function renderPriceOnToppingRemove(topping) {
+            var price = topping.price;
+            totalPrice -= price;
+            renderTotalPrice(totalPrice);
+        }
+
+        function renderPriceOnToppingAdd(topping) {
+            var price = topping.price;
+            totalPrice += price;
+            renderTotalPrice(totalPrice);
+        }
+
+        function renderTotalPrice(totalPrice) {
+            displayPrice = totalPrice.toFixed(2);
+            document.querySelector(`span#totalPrice`).innerText = displayPrice;
+        };
 
         function renderToppingsForm() {
-
             //for each toppings create each btn
             for (var i = 0; i < toppings.length; i++) {
                 var topping = toppings[i];
@@ -320,12 +344,14 @@
                 btn.appendChild(span);//将img和span放在btn里
 
                 document.querySelector('#toppingsContainer').appendChild(btn);//把btn放到container里
-
             }
         }
+
+
         function main() {
+
             renderToppingsForm();
-            document.querySelector(`span#totalPrice`).innerText = totalPrice;
+            document.querySelector(`span#totalPrice`).innerText = totalPrice;//查找id为totalPrice的span
         }//当DOM content loaded的时候，调用main方法
         window.addEventListener('DOMContentLoaded', main);//DOM被成功创建了，只有这样才能拿到content
     </script>
@@ -405,7 +431,9 @@
                                 </ul>
                             </li>
                         </ul>
-                        <p class="total-price">Total: $<span id ="totalPrice"></span></p>
+                        <p class="total-price">Total: $
+                            <span id="totalPrice"></span>
+                        </p>
                         <hr>
                         <button class="button" type="submit">Place order</button>
                     </div>

@@ -4,64 +4,6 @@
 <head>
     <title>Pizza Creator</title>
     <style>
-        body {
-            margin: 0px;
-        }
-
-        h1 {
-            display: none;
-        }
-
-        .Pizza-creator-app {
-            display: flex;
-
-        }
-
-        .pizza-creator-app>* {
-            padding-left: 2rem;
-        }
-
-        .pizza-viewer {
-            background: #3A424F;
-        }
-
-        .pizza {
-            width: 500px;
-            height: 350px;
-            position: relative;
-        }
-
-        .pizza>* {
-            position: absolute;
-        }
-
-        .pizza>.pizza-toppings {
-            width: 70%;
-            left: 100px;
-        }
-
-        .pizza>.pizza-board {
-            width: 100%;
-        }
-
-        .pizza>.pizza-base {
-            width: 75%;
-            left: 90px;
-        }
-
-        .pizza>.pizza-board {
-            width: 100%;
-        }
-
-        .pizza img {
-            margin: 100px 20px 0;
-        }
-
-        .pizza-toppings img {
-            margin-top: 120px;
-            position: absolute;
-        }
-
         .form {
             width: 100%;
             padding-right: 2rem;
@@ -133,11 +75,6 @@
             margin-right: 1rem;
         }
 
-        .topping.active {
-            background: #1a98e1;
-            color: white;
-        }
-
         .summary li {
             margin: 1rem 0;
         }
@@ -167,219 +104,64 @@
             background: #90ce2e;
         }
     </style>
-    <script>   
-        var toppings = [{
-            name: 'I',
-            labelImage: './assets/toppings/anchovy.svg',
-            price: 0.99,
-        }, {
-            name: 'Bacon',
-            labelImage: './assets/toppings/bacon.svg',
-            price: 0.99,
-        }, {
-            name: 'Basil',
-            labelImage: './assets/toppings/basil.svg',
-            price: 0.99,
-        }, {
-            name: 'Chili',
-            labelImage: './assets/toppings/chili.svg',
-            price: 0.99,
-        }, {
-            name: 'Mozzarella',
-            labelImage: './assets/toppings/mozzarella.svg',
-            price: 0.99,
-        }, {
-            name: 'Mushroom',
-            labelImage: './assets/toppings/mushroom.svg',
-            price: 0.99,
-        }, {
-            name: 'Olive',
-            labelImage: './assets/toppings/olive.svg',
-            price: 0.99,
-        }, {
-            name: 'Onion',
-            labelImage: './assets/toppings/onion.svg',
-            price: 0.99,
-        }, {
-            name: 'Pepper',
-            labelImage: './assets/toppings/pepper.svg',
-            price: 0.99,
-        }, {
-            name: 'Pepperoni',
-            labelImage: './assets/toppings/pepperoni.svg',
-            price: 0.99,
-        }, {
-            name: 'Peppers',
-            labelImage: './assets/toppings/peppers.svg',
-            price: 0.99,
-        }, {
-            name: 'Sweetcorn',
-            labelImage: './assets/toppings/sweetcorn.svg',
-            price: 0.99,
-        }];
-
-        var pizzaPrice = 9.99;
-        var selectedToppings = []; //存在数组里，存是否被点击的状态
-        var totalPrice = pizzaPrice;
-
-
-        function higherOrderFunction() {
-            return function () { };
-        }
-
-        function onToppingClick(topping) {
-            var listItem = document.createElement('li');
-            return function () {
-                var name = topping.name;
-                if (selectedToppings.includes(name)) {
-                    removeTopping(topping);
-                    return;
-                }
-                addTopping(topping);
-            }
-        }
-
-        function removeActiveToppingFormButton(topping) {
-            var name = topping.name;
-            var toppingBtn = document.querySelector(`button.topping#${name}`);
-            var index = selectedToppings.indexOf(name);
-            selectedToppings.splice(index, 1);
-            toppingBtn.classList.remove('active');
-        }
-
-        function removeToppingPriceSummary(topping){
-            var price = topping.price;
-            var name = topping.name;
-            var summaryList = document.querySelector(`ul#summaryList`);
-            listItem = summaryList.querySelector(`li.topping-item-summary#${name}`);
-            listItem.remove();
-        }
-
-        function removeTopping(topping) {
-           removeActiveToppingFormButton(topping);
-           removeToppingPriceSummary(topping);
-            renderPriceOnToppingRemove(topping);
-        }
-        
-
-        function activeToppingFormButton(topping) {
-            var name = topping.name;
-            var toppingBtn = document.querySelector(`button.topping#${name}`);
-
-            selectedToppings.push(name);
-            toppingBtn.classList.add('active');
-        }
-
-        function addToppingPriceSummary(topping) {
-            var name = topping.name;
-            var price = topping.price;
-            var summaryList = document.querySelector(`ul#summaryList`);
-           
-            var listItem = document.createElement('li');
-            listItem.className = "topping-item-summary";
-            listItem.id = name;
-
-
-            var itemSpan = document.createElement('span');
-            itemSpan.classList.add('item');
-            itemSpan.innerText = name;
-
-            var priceSpan = document.createElement('span');
-            priceSpan.classList.add('price');
-            priceSpan.innerText = `$${price}`;
-
-            listItem.appendChild(itemSpan);
-            listItem.appendChild(priceSpan);
-            summaryList.appendChild(listItem);
-        }
-
-        function addTopping(topping) {
-            activeToppingFormButton(topping);
-            addToppingPriceSummary(topping);
-            renderPriceOnToppingAdd(topping);
-
-        }
-
-        function renderPriceOnToppingRemove(topping) {
-            var price = topping.price;
-            totalPrice -= price;
-            renderTotalPrice(totalPrice);
-        }
-
-        function renderPriceOnToppingAdd(topping) {
-            var price = topping.price;
-            totalPrice += price;
-            renderTotalPrice(totalPrice);
-        }
-
-        function renderTotalPrice(totalPrice) {
-            displayPrice = totalPrice.toFixed(2);
-            document.querySelector(`span#totalPrice`).innerText = displayPrice;
-        };
-
-        function renderToppingsForm() {
-            //for each toppings create each btn
-            for (var i = 0; i < toppings.length; i++) {
-                var topping = toppings[i];
-
-                //create button
-                //append toppingContainer
-                var btn = document.createElement('button'); //暂放在内存里
-                btn.id = topping.name;
-                btn.type = 'button';//browser默认把button认为是submitbutton，消除button的默认行为，
-                btn.classList.add('topping');//把css加到btn上
-
-                const func = onToppingClick(topping);
-
-                btn.onclick = func;
-                //img+span
-                var img = document.createElement('img');
-                img.src = topping.labelImage;
-                img.alt = topping.name;
-
-                var span = document.createElement('span');
-                span.innerText = topping.name;
-
-                btn.appendChild(img);
-                btn.appendChild(span);//将img和span放在btn里
-
-                document.querySelector('#toppingsContainer').appendChild(btn);//把btn放到container里
-            }
-        }
-
-
-        function main() {
-
-            renderToppingsForm();
-            document.querySelector(`span#totalPrice`).innerText = totalPrice;//查找id为totalPrice的span
-        }//当DOM content loaded的时候，调用main方法
-        window.addEventListener('DOMContentLoaded', main);//DOM被成功创建了，只有这样才能拿到content
-    </script>
 </head>
+<script> 
+ const toppings = [{
+      // name: 'Anchovy', // 如果我想改一下咸鱼的名字 我只需要改这里就可以了
+      name: '咸鱼', // 我们再回到 slack 去
+      labelImage: './assets/toppings/anchovy.svg',
+      contentImage: './assets/toppings/anchovies.svg'      
+    }, {
+      name: 'Bacon',
+      labelImage: './assets/toppings/bacon.svg',
+      contentImage: './assets/toppings/bacons.svg',
+    }, {
+      name: 'Basil',
+      labelImage: './assets/toppings/basil.svg',
+      contentImage: './assets/toppings/basils.svg',
+    }, {
+      name: 'Chili',
+      labelImage: './assets/toppings/chili.svg',
+      contentImage: './assets/toppings/chilies.svg',
+    }, {
+      name: 'Mozzarella',
+      labelImage: './assets/toppings/mozzarella.svg',
+      contentImage: './assets/toppings/mozzarellas.svg',
+    }, {
+      name: 'Mushroom',
+      labelImage: './assets/toppings/mushroom.svg',
+      contentImage: './assets/toppings/mushrooms.svg',
+    }, {
+      name: 'Olive',
+      labelImage: './assets/toppings/olive.svg',
+      contentImage: './assets/toppings/olives.svg',
+    }, {
+      name: 'Onion',
+      labelImage: './assets/toppings/onion.svg',
+      contentImage: './assets/toppings/onions.svg',
+    }, {
+      name: 'Pepper',
+      labelImage: './assets/toppings/pepper.svg',
+      contentImage: './assets/toppings/peppers.svg',
+    }, {
+      name: 'Pepperoni',
+      labelImage: './assets/toppings/pepperoni.svg',
+      contentImage: './assets/toppings/pepperonis.svg',
+    }, {
+      name: 'Peppers',
+      labelImage: './assets/toppings/peppers.svg',
+      contentImage: './assets/toppings/pepperss.svg',
+    }, {
+      name: 'Sweetcorn',
+      labelImage: './assets/toppings/sweetcorn.svg',
+      contentImage: './assets/toppings/sweetcorns.svg',
+    }];
+
+</script>
 
 <body>
     <h1>Pizza Creator</h1>
-    <section class="Pizza-creator-app">
-        <section class="pizza-viewer">
-            <div class="pizza">
-                <div class="pizza-board">
-                    <img src="./assets/board.svg" alt="Pizza board">
-                </div>
-                <div class="pizza-base">
-                    <img src="./assets/base.svg" alt="Pizza base">
-                </div>
-                <div class="pizza-toppings">
-                    <img src="./assets/toppings/anchovies.svg" alt="Anchovies">
-                    <img src="./assets/toppings/bacons.svg" alt="Bacons">
-                    <img src="./assets/toppings/basils.svg" alt="Basils">
-                    <img src="./assets/toppings/chilies.svg" alt="Chilies">
-                    <img src="./assets/toppings/mozzarellas.svg" alt="Mozzarellas">
-                    <img src="./assets/toppings/mushrooms.svg" alt="Mushrooms">
-                    <img src="./assets/toppings/olives.svg" alt="Olives">
-                    <img src="./assets/toppings/onions.svg" alt="Onions">
-                    <img src="./assets/toppings/peppers.svg" alt="Peppers">
-                </div>
-        </section>
+    <section>
         <section class="form">
             <form action="">
                 <section class="detail">
@@ -415,25 +197,50 @@
                 </section>
                 <section class="toppings">
                     <h2>Choose your toppings</h2>
-                    <div class="toppings-container" id="toppingsContainer">
+                    <div class="toppings-container" id="toppingsChoiceForm">
+                      <script>
+                          v
+                    function renderToppingForm() {  }
+                      function main(){
+                          //renderToppingsForm
+                          console.log('Here');
+                         // debugger; 
+                      }
+                      window.addEventListener('DOMContentLoaded',main);//命令式编程
+                      </script>
 
                     </div>
                 </section>
+
+
+
+
                 <section class="summary">
                     <div>
                         <h2>Summary:</h2>
-                        <ul class="items">
-                            <li>
-                                <span class="item">Pizza</span>
-                                <span class="price">$9.99</span>
-
-                                <ul id='summaryList'>
+                        <ul>
+                            <li>Pizza $9.99
+                                <ul>
+                                    <li>
+                                        <span>Onion</span>
+                                        <span class="price">$0.99</span>
+                                    </li>
+                                    <li>
+                                        <span>Mushroom</span>
+                                        <span class="price">$0.99</span>
+                                    </li>
+                                    <li>
+                                        <span>Bacon</span>
+                                        <span class="price">$0.99</span>
+                                    </li>
+                                    <li>
+                                        <span>Anchovy</span>
+                                        <span class="price">$0.99</span>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
-                        <p class="total-price">Total: $
-                            <span id="totalPrice"></span>
-                        </p>
+                        <p class="total-price">Total: $13.86</p>
                         <hr>
                         <button class="button" type="submit">Place order</button>
                     </div>
